@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace service_data.Models.EntityModels
 {
-    internal class Class1
+    class User
     {
+        public Guid Id { get; set; }
     }
 }
