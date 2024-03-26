@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace service_data.Models.EntityModels
 {
-    class Ticket
+    public class Ticket
     {
         public Guid Id { get; set; }
     }

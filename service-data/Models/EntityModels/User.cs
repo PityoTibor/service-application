@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace service_data.Models.EntityModels
 {
-    class User
+    public class User
     {
         public Guid Id { get; set; }
     }

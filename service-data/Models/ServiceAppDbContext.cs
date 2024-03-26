@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using service_data.Models.EntityModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,10 @@ namespace service_data.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+            optionsBuilder.UseMySql(ServerVersion.AutoDetect("server=localhost;database=Products;User=tibor;Password=Devanlek4203;"), x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
         }
+
+        public DbSet<Ticket> Ticket { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }
