@@ -19,5 +19,6 @@ namespace service_data.Models
 
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Message> Message { get; set; }
     }
 }
