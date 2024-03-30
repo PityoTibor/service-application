@@ -20,9 +20,6 @@ namespace service_data.Models.EntityModels
         public string? Email { get; set; }
         public string? Password { get; set; }
         public RoleEnum? Role { get; set;}
-
-        [ForeignKey("Ticket_Id")]
-        public Ticket ticket { get; set; }
-
+        public ICollection<Message> Messages { get; set; }
     }
 }

@@ -15,11 +15,8 @@ namespace service_data.Models.EntityModels
         public Guid Message_Id { get; set; }
         public string? Content { get; set; }
         public DateTime? Created_date { get; set; }
-        [ForeignKey("User_Id")]
         public User Sender { get; set; }
-        [ForeignKey("Ticket_Id")]
         public Ticket Ticket { get; set; }
-    //    [NotMapped]
-    //    public virtual Ticket NavPropTicket { get; set; }
+
     }
 }
