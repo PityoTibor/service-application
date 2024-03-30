@@ -15,9 +15,9 @@ namespace service_data.Models.EntityModels
         public Guid Message_id { get; set; }
         public string? Content { get; set; }
         public DateTime? Created_date { get; set; }
-        public virtual User Sender { get; set; }
-        [NotMapped]
-        public virtual Ticket Ticket { get; set; }
+        public Handyman? Handyman { get; set; }
+        public Costumer? Costumer { get; set; }
+        public Ticket? Ticket { get; set; }
 
     }
 }

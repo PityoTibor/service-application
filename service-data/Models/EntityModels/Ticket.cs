@@ -27,8 +27,9 @@ namespace service_data.Models.EntityModels
         public DateTime? Created_date { get; set; }
         public SeverityEnum? Severity { get; set; }
         public StatusEnum? statusEnum  { get; set; }
+        public Handyman? Handymen { get; set; }
+        public Costumer? Costumer { get; set; }
         public ICollection<Message>? Messages { get; set; }
-        public ICollection<User>? Users { get; set; }
 
     }
 }
