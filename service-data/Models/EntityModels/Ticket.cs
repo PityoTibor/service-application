@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,12 +21,10 @@ namespace service_data.Models.EntityModels
     public class Ticket
     {
         [Key]
-        public Guid Ticket_Id { get; set; }
+        public Guid Ticket_id { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
         public DateTime? Created_date { get; set; }
-        public User? Costumer { get; set; }
-        public User? Handyman { get; set; }
         public SeverityEnum? Severity { get; set; }
         public StatusEnum? statusEnum  { get; set; }
         public ICollection<Message>? Messages { get; set; }

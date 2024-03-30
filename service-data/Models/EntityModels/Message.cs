@@ -12,11 +12,12 @@ namespace service_data.Models.EntityModels
     public class Message
     {
         [Key]
-        public Guid Message_Id { get; set; }
+        public Guid Message_id { get; set; }
         public string? Content { get; set; }
         public DateTime? Created_date { get; set; }
-        public User Sender { get; set; }
-        public Ticket Ticket { get; set; }
+        public virtual User Sender { get; set; }
+        [NotMapped]
+        public virtual Ticket Ticket { get; set; }
 
     }
 }
