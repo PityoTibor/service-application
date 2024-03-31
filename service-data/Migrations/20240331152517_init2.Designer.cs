@@ -11,8 +11,8 @@ using service_data.Models;
 namespace service_data.Migrations
 {
     [DbContext(typeof(ServiceAppDbContext))]
-    [Migration("20240330171309_init")]
-    partial class init
+    [Migration("20240331152517_init2")]
+    partial class init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,12 +28,12 @@ namespace service_data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("User_id1")
+                    b.Property<Guid>("Costumer_user_idUser_id")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Costumer_id");
 
-                    b.HasIndex("User_id1");
+                    b.HasIndex("Costumer_user_idUser_id");
 
                     b.ToTable("Costumer");
                 });
@@ -44,12 +44,12 @@ namespace service_data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("User_id1")
+                    b.Property<Guid>("Handyman_user_idUser_id")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Handyman_id");
 
-                    b.HasIndex("User_id1");
+                    b.HasIndex("Handyman_user_idUser_id");
 
                     b.ToTable("Handyman");
                 });
@@ -134,6 +134,9 @@ namespace service_data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<string>("Username")
                         .HasColumnType("longtext");
 
@@ -144,24 +147,24 @@ namespace service_data.Migrations
 
             modelBuilder.Entity("service_data.Models.EntityModels.Costumer", b =>
                 {
-                    b.HasOne("service_data.Models.EntityModels.User", "User_id")
+                    b.HasOne("service_data.Models.EntityModels.User", "Costumer_user_id")
                         .WithMany()
-                        .HasForeignKey("User_id1")
+                        .HasForeignKey("Costumer_user_idUser_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User_id");
+                    b.Navigation("Costumer_user_id");
                 });
 
             modelBuilder.Entity("service_data.Models.EntityModels.Handyman", b =>
                 {
-                    b.HasOne("service_data.Models.EntityModels.User", "User_id")
+                    b.HasOne("service_data.Models.EntityModels.User", "Handyman_user_id")
                         .WithMany()
-                        .HasForeignKey("User_id1")
+                        .HasForeignKey("Handyman_user_idUser_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User_id");
+                    b.Navigation("Handyman_user_id");
                 });
 
             modelBuilder.Entity("service_data.Models.EntityModels.Message", b =>

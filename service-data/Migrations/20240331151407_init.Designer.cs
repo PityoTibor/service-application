@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using service_data.Models;
 
@@ -10,9 +11,11 @@ using service_data.Models;
 namespace service_data.Migrations
 {
     [DbContext(typeof(ServiceAppDbContext))]
-    partial class ServiceAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240331151407_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,9 +133,6 @@ namespace service_data.Migrations
 
                     b.Property<string>("Password")
                         .HasColumnType("longtext");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .HasColumnType("longtext");

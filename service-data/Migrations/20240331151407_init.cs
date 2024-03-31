@@ -37,14 +37,14 @@ namespace service_data.Migrations
                 columns: table => new
                 {
                     Costumer_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    User_id1 = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    Costumer_user_idUser_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Costumer", x => x.Costumer_id);
                     table.ForeignKey(
-                        name: "FK_Costumer_User_User_id1",
-                        column: x => x.User_id1,
+                        name: "FK_Costumer_User_Costumer_user_idUser_id",
+                        column: x => x.Costumer_user_idUser_id,
                         principalTable: "User",
                         principalColumn: "User_id",
                         onDelete: ReferentialAction.Cascade);
@@ -56,14 +56,14 @@ namespace service_data.Migrations
                 columns: table => new
                 {
                     Handyman_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    User_id1 = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    Handyman_user_idUser_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Handyman", x => x.Handyman_id);
                     table.ForeignKey(
-                        name: "FK_Handyman_User_User_id1",
-                        column: x => x.User_id1,
+                        name: "FK_Handyman_User_Handyman_user_idUser_id",
+                        column: x => x.Handyman_user_idUser_id,
                         principalTable: "User",
                         principalColumn: "User_id",
                         onDelete: ReferentialAction.Cascade);
@@ -135,14 +135,14 @@ namespace service_data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Costumer_User_id1",
+                name: "IX_Costumer_Costumer_user_idUser_id",
                 table: "Costumer",
-                column: "User_id1");
+                column: "Costumer_user_idUser_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Handyman_User_id1",
+                name: "IX_Handyman_Handyman_user_idUser_id",
                 table: "Handyman",
-                column: "User_id1");
+                column: "Handyman_user_idUser_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Message_Costumer_id",
