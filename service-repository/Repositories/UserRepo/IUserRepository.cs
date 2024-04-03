@@ -10,9 +10,9 @@ namespace service_repository.Repositories.UserRepo
     public interface IUserRepository
     {
         Task<User> CreateAsync(User user);
-        Task<IQueryable> GetOneAsync(Guid Id);
-        Task<IQueryable> GetAllAsync();
-        Task<User> UpdateAsync(Guid Id);
-        Task<User> DeleteAsync(Guid Id);
+        Task<User> GetOneAsync(Guid Id);
+        Task<IQueryable<User>> GetAllAsync();
+        Task<User> UpdateAsync(Guid Id, User user);
+        Task<bool> DeleteAsync(Guid Id);
     }
 }
