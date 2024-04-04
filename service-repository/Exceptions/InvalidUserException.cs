@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace service_data.Exceptions
-{
+namespace service_repository.Exceptions
     public class InvalidUserException : Exception
     {
         public string message { get; set; }

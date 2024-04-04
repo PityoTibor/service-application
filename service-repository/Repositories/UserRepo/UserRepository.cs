@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using service_data.Exception;
-using service_data.Exceptions;
+using service_repository.Exceptions;
 using service_data.Models;
 using service_data.Models.EntityModels;
 using System;
@@ -95,15 +94,53 @@ namespace service_repository.Repositories.UserRepo
             return user.Result;
         }
 
-        public Task<User> UpdateAsync(Guid Id, User user)
+        public async Task<User> UpdateAsync(Guid Id, User user)
         {
-            throw new NotImplementedException();
+            if (IsValidUser(user))
+            {
+                var existingUser = await ctx.User.FirstOrDefaultAsync(x => x.User_id == Id);
+
+                if (existingUser == null)
+                {
+                    throw new UserNotFoundException("User not found");
+                }
+
+                existingUser.Username = user.Username != null ? user.Username : existingUser.Username;
+                existingUser.Password = user.Password != null ? user.Password : existingUser.Password;
+                existingUser.Email = user.Email != null ? user.Email : existingUser.Email;
+                existingUser.Role = user.Role != existingUser.Role ? user.Role : existingUser.Role;
+
+                try
+                {
+                    ctx.User.Update(existingUser);
+                    await ctx.SaveChangesAsync();
+                    return existingUser;
+                }
+                catch (DbUpdateException ex)
+                {
+                    throw new DatabaseOperationException("Error updating user", ex);
+                }
+            }
+            else
+            {
+                throw new InvalidUserException(message: "The object is not of the expected type.");
+            }
         }
 
-
-        private bool IsValidUser(User user)
+        private bool IsValidUser(Object user)
         {
-            return true;
+            if (user is User)
+            {
+                return (user as User).User_id != null && (user as User).User_id.GetType() == typeof(Guid) &&
+                (user as User).Username != null && (user as User).Username.GetType() == typeof(string) &&
+                (user as User).Password != null && (user as User).Password.GetType() == typeof(string) &&
+                (user as User).Email != null && (user as User).Email.GetType() == typeof(string) &&
+                (user as User).Role != null && (user as User).Role.GetType() == typeof(RoleEnum);
+            }
+            else
+            {
+                throw new InvalidUserException(message: "The object is not of the expected type.");
+            }
         }
     }
 }

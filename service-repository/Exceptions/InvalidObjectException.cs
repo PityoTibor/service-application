@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace service_data.Exceptions
 {
-    public class UserUndefinedException : Exception
+    public class InvalidObjectException : Exception
     {
         public string message { get; set; }
-        public UserUndefinedException() { }
-        public UserUndefinedException(string message)
+        public InvalidObjectException() { }
+        public InvalidObjectException(string message)
         {
             this.message = message;
         }
