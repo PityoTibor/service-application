@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using service_data.Models.EntityModels;
 
-namespace service_repository.Repositories.UserRepo
+namespace service_repository.Repositories.RepoUsers
 {
     public interface IUserRepository
     {

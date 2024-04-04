@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\service-data\service-data.csproj" />
+    <ProjectReference Include="..\service-repository\service-repository.csproj" />
+  </ItemGroup>
+
 </Project>

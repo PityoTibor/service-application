@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace service_repository.Repositories.UserRepo
+namespace service_repository.Repositories.RepoUsers
 {
     public class UserRepository : IUserRepository
     {
@@ -28,7 +28,6 @@ namespace service_repository.Repositories.UserRepo
                     try
                     {
                         ctx.User.Add(user);
-                        await ctx.SaveChangesAsync();
                         return user;
                     }
                     catch (Exception ex)
