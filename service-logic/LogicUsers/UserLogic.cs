@@ -15,29 +15,36 @@ namespace service_logic.LogicUsers
         {
             this.userRepository = userRepository;
         }
-        public Task<User> CreateAsync(User user)
+        public async Task<User> CreateAsync(User user)
         {
-            return userRepository.CreateAsync(user);
+            try
+            {
+                return await userRepository.CreateAsync(user);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public Task<bool> DeleteAsync(Guid Id)
+        public async Task<bool> DeleteAsync(Guid Id)
         {
-            return userRepository.DeleteAsync(Id);
+            return await userRepository.DeleteAsync(Id);
         }
 
-        public Task<IQueryable<User>> GetAllAsync()
+        public async Task<IQueryable<User>> GetAllAsync()
         {
-            return userRepository.GetAllAsync();
+            return await userRepository.GetAllAsync();
         }
 
-        public Task<User> GetOneAsync(Guid Id)
+        public async Task<User> GetOneAsync(Guid Id)
         {
-            return userRepository.GetOneAsync(Id);
+            return await userRepository.GetOneAsync(Id);
         }
 
-        public Task<User> UpdateAsync(Guid Id, User user)
+        public async Task<User> UpdateAsync(Guid Id, User user)
         {
-            return userRepository.UpdateAsync(Id, user);
+            return await userRepository.UpdateAsync(Id, user);
         }
     }
 }

@@ -9,10 +9,11 @@ namespace service_repository.Exceptions
     public class UserUndefinedException : Exception
     {
         public string message { get; set; }
+        public string ErrorMessage { get; set; }
         public UserUndefinedException() { }
-        public UserUndefinedException(string message)
+        public UserUndefinedException(string ErrorMessage)
         {
-            this.message = message;
+            this.ErrorMessage = ErrorMessage;
         }
     }
 }

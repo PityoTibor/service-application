@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.DataProtection.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.OpenApi.Models;
 using service_data.Models.EntityModels;
 using service_logic;
+using service_repository.Exceptions;
 
 namespace service_application.Controller
 {
@@ -16,18 +19,17 @@ namespace service_application.Controller
              this.userLogic = userLogic;
         }
         [HttpPost]
-        public IActionResult CreateUser([FromBody] User user )
+        public async Task<IActionResult> CreateUser([FromBody] User user )
         {
             try
             {
-                userLogic.CreateAsync(user);
-                return Ok("User has been created.");
+                var result = await userLogic.CreateAsync(user);
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Something went wrong: {ex.Message}");
+                throw ex;
             }
         }
-
     }
 }
