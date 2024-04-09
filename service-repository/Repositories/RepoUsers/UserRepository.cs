@@ -21,37 +21,14 @@ namespace service_repository.Repositories.RepoUsers
 
         public async Task<User> CreateAsync(User user)
         {
-            //    user = null;
-            //    try
-            //    {
-            //        if (IsValidUser(user))
-            //        {
-            //            try
-            //            {
-            //                ctx.User.Add(user);
-            //                return user;
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                throw new DatabaseOperationException(message: "Failed to save user", innerException: ex);
-            //            }
-            //        }
-            //        else
-            //        {
-            //            throw new InvalidUserException(message: "Invalid user data");
-            //        }
-            //    }
-            //    catch (Exception)
-            //    {
-            //        throw new UserUndefinedException(message: "User is null");
-            //    }
+            user = null;
             if (user != null)
             {
                 if (IsValidUser(user))
                 {
                     try
                     {
-                        ctx.User.Add(user);
+                        await ctx.User.AddAsync(user);
                         return user;
                     }
                     catch (Exception ex)
@@ -108,13 +85,12 @@ namespace service_repository.Repositories.RepoUsers
 
         public async Task<User> GetOneAsync(Guid Id)
         {
-            var user = ctx.User.FindAsync(Id);
-
-            if (user.Result == null)
+            var res = await ctx.User.FindAsync(Id);
+            if (res == null)
             {
                 throw new UserNotFoundException(message: $"User with ID {Id} not found");
             }
-            return user.Result;
+            return res;
         }
 
         public async Task<User> UpdateAsync(Guid Id, User user)
@@ -154,7 +130,6 @@ namespace service_repository.Repositories.RepoUsers
         {
             if (user is User)
             {
-                (user as User).Username = null;
                 return (user as User).User_id != null && (user as User).User_id.GetType() == typeof(Guid) &&
                 (user as User).Username != null && (user as User).Username.GetType() == typeof(string) &&
                 (user as User).Password != null && (user as User).Password.GetType() == typeof(string) &&

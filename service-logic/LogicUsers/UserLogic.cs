@@ -17,14 +17,7 @@ namespace service_logic.LogicUsers
         }
         public async Task<User> CreateAsync(User user)
         {
-            try
-            {
-                return await userRepository.CreateAsync(user);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return await userRepository.CreateAsync(user);
         }
 
         public async Task<bool> DeleteAsync(Guid Id)

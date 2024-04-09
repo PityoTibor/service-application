@@ -17,6 +17,7 @@ namespace service_data.Models
             optionsBuilder.UseMySql(ServerVersion.AutoDetect("server=localhost;database=service_database;User=tibor;Password=Devanlek4203"), x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
         }
 
+
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Message> Message { get; set; }
