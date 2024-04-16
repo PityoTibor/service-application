@@ -21,7 +21,6 @@ namespace service_repository.Repositories.RepoUsers
 
         public async Task<User> CreateAsync(User user)
         {
-            user = null;
             if (user != null)
             {
                 if (IsValidUser(user))
@@ -126,15 +125,15 @@ namespace service_repository.Repositories.RepoUsers
             }
         }
 
-        private bool IsValidUser(Object user)
+        private bool IsValidUser(Object admin)
         {
-            if (user is User)
+            if (admin is User)
             {
-                return (user as User).User_id != null && (user as User).User_id.GetType() == typeof(Guid) &&
-                (user as User).Username != null && (user as User).Username.GetType() == typeof(string) &&
-                (user as User).Password != null && (user as User).Password.GetType() == typeof(string) &&
-                (user as User).Email != null && (user as User).Email.GetType() == typeof(string) &&
-                (user as User).Role != null && (user as User).Role.GetType() == typeof(RoleEnum);
+                return (admin as User).User_id != null && (admin as User).User_id.GetType() == typeof(Guid) &&
+                (admin as User).Username != null && (admin as User).Username.GetType() == typeof(string) &&
+                (admin as User).Password != null && (admin as User).Password.GetType() == typeof(string) &&
+                (admin as User).Email != null && (admin as User).Email.GetType() == typeof(string) &&
+                (admin as User).Role != null && (admin as User).Role.GetType() == typeof(RoleEnum);
             }
             else
             {

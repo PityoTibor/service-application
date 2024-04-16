@@ -18,6 +18,12 @@ builder.Services.AddDbContext<ServiceAppDbContext>(options => options.UseMySql(c
 builder.Services.AddScoped<IUserLogic, UserLogic>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+{
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+}));
 
 
 var app = builder.Build();
@@ -37,7 +43,7 @@ app.MapGet("/", () =>
 
     return "Hello service-application";
 });
-
+app.UseCors("MyPolicy");
 
 app.MapControllers();
 
