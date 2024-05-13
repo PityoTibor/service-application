@@ -1,9 +1,13 @@
-﻿using service_data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using service_data.Models;
 using service_data.Models.DTOs;
+using service_data.Models.DTOs.RequestDto;
 using service_data.Models.EntityModels;
 using service_repository.Exceptions;
+using service_repository.Repositories.RepoUsers;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,19 +17,37 @@ namespace service_repository.Repositories.RepoAdmin
     public class AdminRepository : IAdminRepository
     {
         private readonly ServiceAppDbContext ctx;
-        public AdminRepository(ServiceAppDbContext ctx)
+        private readonly IUserRepository userRepository;
+        public AdminRepository(ServiceAppDbContext ctx, IUserRepository userRepository)
         {
             this.ctx = ctx;
+            this.userRepository = userRepository;
         }
-        public async Task<Admin> CreateAsync(Admin admin)
+        //kell majd dto, meg lehetséges, hogy uj migracio is kell
+        public async Task<Admin> CreateAsync(AdminEntityDto adminUser)
         {
-            admin = null;
-            if (admin != null)
+            //kell majd egy mapper a userre, vagy egy factory
+            User user = new User()
             {
-                if (IsValidAdmin(admin))
+                Email = adminUser.Email,
+                Password = adminUser.Password,
+                Role = adminUser.Role,
+                Username = adminUser.Username,
+                User_id = new Guid()
+            };
+
+            var createdUser = await userRepository.CreateAsync(user);
+
+            if (adminUser != null)
+            {
+                if (IsValidAdmin(adminUser))
                 {
                     try
                     {
+                        Admin admin = new Admin();
+                        admin.Admin_id = new Guid();
+                        admin.Admin_user_id = createdUser;
+
                         await ctx.Admin.AddAsync(admin);
                         return admin;
                     }
@@ -45,35 +67,94 @@ namespace service_repository.Repositories.RepoAdmin
             }
         }
 
-        public Task<bool> DeleteAsync(Guid Id)
+        public async Task<bool> DeleteAsync(Guid Id)
         {
-            throw new NotImplementedException();
-        }
+            var adminUser = await GetOneAsync(Id);
 
-        public Task<IQueryable<Admin>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Admin> GetOneAsync(Guid Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Admin> UpdateAsync(Guid Id, Admin user)
-        {
-            throw new NotImplementedException();
-        }
-
-        private bool IsValidAdmin(Object user)
-        {
-            if (user is User)
+            if (adminUser != null)
             {
-                return (user as User).User_id != null && (user as User).User_id.GetType() == typeof(Guid) &&
-                (user as User).Username != null && (user as User).Username.GetType() == typeof(string) &&
-                (user as User).Password != null && (user as User).Password.GetType() == typeof(string) &&
-                (user as User).Email != null && (user as User).Email.GetType() == typeof(string) &&
-                (user as User).Role != null && (user as User).Role.GetType() == typeof(RoleEnum);
+                try
+                {
+                    ctx.Admin.Remove(adminUser);
+                    await ctx.SaveChangesAsync();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw new DatabaseOperationException(message: "Failed to delete adminUser", innerException: ex);
+                }
+            }
+            else
+            {
+                throw new UserNotFoundException(message: $"adminUser with ID {Id} not found");
+            }
+        }
+
+        public async Task<IQueryable<Admin>> GetAllAsync()
+        {
+            try
+            {
+                var query = ctx.Admin.AsQueryable();
+                return query;
+            }
+            catch (Exception ex)
+            {
+                throw new DatabaseOperationException(message: "Failed to retrieve users", innerException: ex);
+            }
+        }
+
+        public async Task<Admin> GetOneAsync(Guid Id)
+        {
+            var res = await ctx.Admin.FindAsync(Id);
+            if (res == null)
+            {
+                throw new UserNotFoundException(message: $"adminUser with ID {Id} not found");
+            }
+            return res;
+        }
+
+        public async Task<Admin> UpdateAsync(Guid Id, AdminEntityDto adminUser)
+        {
+            if (IsValidAdmin(adminUser))
+            {
+                var existingUser = await ctx.Admin.FirstOrDefaultAsync(x => x.Admin_id == Id);
+
+                if (existingUser == null)
+                {
+                    throw new UserNotFoundException("User not found");
+                }
+
+                existingUser.Admin_user_id.Username = adminUser.Username != null ? adminUser.Username : existingUser.Admin_user_id.Username;
+                existingUser.Admin_user_id.Password = adminUser.Password != null ? adminUser.Password : existingUser.Admin_user_id.Password;
+                existingUser.Admin_user_id.Email = adminUser.Email != null ? adminUser.Email : existingUser.Admin_user_id.Email;
+                existingUser.Admin_user_id.Role = adminUser.Role != existingUser.Admin_user_id.Role ? adminUser.Role : existingUser.Admin_user_id.Role;
+
+
+                try
+                {
+                    ctx.Admin.Update(existingUser);
+                    await ctx.SaveChangesAsync();
+                    return existingUser;
+                }
+                catch (DbUpdateException ex)
+                {
+                    throw new DatabaseOperationException("Error updating user", ex);
+                }
+            }
+            else
+            {
+                throw new InvalidUserException(message: "The object is not of the expected type.");
+            }
+        }
+
+        private bool IsValidAdmin(Object admin)
+        {
+            if (admin is AdminEntityDto)
+            {
+                return (admin as AdminEntityDto).Username != null && (admin as AdminEntityDto).Username.GetType() == typeof(string) &&
+                (admin as AdminEntityDto).Password != null && (admin as AdminEntityDto).Password.GetType() == typeof(string) &&
+                (admin as AdminEntityDto).Email != null && (admin as AdminEntityDto).Email.GetType() == typeof(string) &&
+                (admin as AdminEntityDto).Role != null && (admin as AdminEntityDto).Role.GetType() == typeof(RoleEnum);
             }
             else
             {

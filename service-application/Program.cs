@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using service_data.Models;
 using service_logic;
+using service_logic.LogicAdmin;
 using service_logic.LogicUsers;
+using service_repository.Repositories.RepoAdmin;
 using service_repository.Repositories.RepoUsers;
 using System;
 
@@ -16,7 +18,10 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("service.application.ConnectionString");
 builder.Services.AddDbContext<ServiceAppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddScoped<IUserLogic, UserLogic>();
+builder.Services.AddScoped<IAdminLogic, AdminLogic>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+
 
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {

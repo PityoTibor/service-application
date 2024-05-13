@@ -95,6 +95,7 @@ namespace service_application.Controller
             try
             {
                 var result = await userLogic.DeleteAsync(Id);
+                //return StatusCode(200, "asdasd");
                 return Ok(result);
             }
             catch (Exception)
