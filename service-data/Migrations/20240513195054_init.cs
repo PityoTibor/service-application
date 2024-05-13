@@ -24,11 +24,31 @@ namespace service_data.Migrations
                     Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Role = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.User_id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Admin",
+                columns: table => new
+                {
+                    Admin_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Admin_user_idUser_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admin", x => x.Admin_id);
+                    table.ForeignKey(
+                        name: "FK_Admin_User_Admin_user_idUser_id",
+                        column: x => x.Admin_user_idUser_id,
+                        principalTable: "User",
+                        principalColumn: "User_id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -135,6 +155,11 @@ namespace service_data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Admin_Admin_user_idUser_id",
+                table: "Admin",
+                column: "Admin_user_idUser_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Costumer_Costumer_user_idUser_id",
                 table: "Costumer",
                 column: "Costumer_user_idUser_id");
@@ -173,6 +198,9 @@ namespace service_data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Admin");
+
             migrationBuilder.DropTable(
                 name: "Message");
 

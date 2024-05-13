@@ -19,6 +19,22 @@ namespace service_data.Migrations
                 .HasAnnotation("ProductVersion", "7.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("service_data.Models.EntityModels.Admin", b =>
+                {
+                    b.Property<Guid>("Admin_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("Admin_user_idUser_id")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Admin_id");
+
+                    b.HasIndex("Admin_user_idUser_id");
+
+                    b.ToTable("Admin");
+                });
+
             modelBuilder.Entity("service_data.Models.EntityModels.Costumer", b =>
                 {
                     b.Property<Guid>("Costumer_id")
@@ -140,6 +156,17 @@ namespace service_data.Migrations
                     b.HasKey("User_id");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("service_data.Models.EntityModels.Admin", b =>
+                {
+                    b.HasOne("service_data.Models.EntityModels.User", "Admin_user_id")
+                        .WithMany()
+                        .HasForeignKey("Admin_user_idUser_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Admin_user_id");
                 });
 
             modelBuilder.Entity("service_data.Models.EntityModels.Costumer", b =>

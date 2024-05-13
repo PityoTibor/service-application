@@ -28,6 +28,7 @@ namespace service_repository.Repositories.RepoUsers
                     try
                     {
                         await ctx.User.AddAsync(user);
+                        ctx.SaveChanges();
                         return user;
                     }
                     catch (Exception ex)

@@ -49,6 +49,7 @@ namespace service_repository.Repositories.RepoAdmin
                         admin.Admin_user_id = createdUser;
 
                         await ctx.Admin.AddAsync(admin);
+                        ctx.SaveChanges();
                         return admin;
                     }
                     catch (Exception ex)
