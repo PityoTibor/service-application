@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.EntityModels;
+using service_logic;
 using service_logic.LogicAdmin;
 using service_logic.LogicUsers;
 
@@ -28,6 +29,23 @@ namespace service_application.Controller
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        [HttpDelete]
+        [Route("{Id:Guid}")]
+        public async Task<IActionResult> DeleteUser([FromRoute] Guid Id)
+        {
+            try
+            {
+                var result = await adminLogic.DeleteAsync(Id);
+                //return StatusCode(200, "asdasd");
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }

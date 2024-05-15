@@ -11,7 +11,7 @@ using service_data.Models;
 namespace service_data.Migrations
 {
     [DbContext(typeof(ServiceAppDbContext))]
-    [Migration("20240513195054_init")]
+    [Migration("20240515200307_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -28,12 +28,10 @@ namespace service_data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Admin_user_idUser_id")
+                    b.Property<Guid>("User_id")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Admin_id");
-
-                    b.HasIndex("Admin_user_idUser_id");
 
                     b.ToTable("Admin");
                 });
@@ -44,30 +42,12 @@ namespace service_data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Costumer_user_idUser_id")
+                    b.Property<Guid>("User_id")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Costumer_id");
 
-                    b.HasIndex("Costumer_user_idUser_id");
-
                     b.ToTable("Costumer");
-                });
-
-            modelBuilder.Entity("service_data.Models.EntityModels.Handyman", b =>
-                {
-                    b.Property<Guid>("Handyman_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("Handyman_user_idUser_id")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Handyman_id");
-
-                    b.HasIndex("Handyman_user_idUser_id");
-
-                    b.ToTable("Handyman");
                 });
 
             modelBuilder.Entity("service_data.Models.EntityModels.Message", b =>
@@ -79,25 +59,21 @@ namespace service_data.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("Costumer_id")
+                    b.Property<Guid>("CostumerId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("Created_date")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("Handyman_id")
+                    b.Property<Guid>("HandymanId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("Ticket_id")
+                    b.Property<Guid>("TicketId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Message_id");
 
-                    b.HasIndex("Costumer_id");
-
-                    b.HasIndex("Handyman_id");
-
-                    b.HasIndex("Ticket_id");
+                    b.HasIndex("CostumerId");
 
                     b.ToTable("Message");
                 });
@@ -108,6 +84,9 @@ namespace service_data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<int>("CostumerId")
+                        .HasColumnType("int");
+
                     b.Property<Guid?>("Costumer_id")
                         .HasColumnType("char(36)");
 
@@ -117,7 +96,7 @@ namespace service_data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("HandymenHandyman_id")
+                    b.Property<Guid>("HandymanId")
                         .HasColumnType("char(36)");
 
                     b.Property<int?>("Severity")
@@ -133,8 +112,6 @@ namespace service_data.Migrations
 
                     b.HasIndex("Costumer_id");
 
-                    b.HasIndex("HandymenHandyman_id");
-
                     b.ToTable("Ticket");
                 });
 
@@ -144,8 +121,17 @@ namespace service_data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("Admin_id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("Costumer_id")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
+
+                    b.Property<Guid>("Handyman_id")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Password")
                         .HasColumnType("longtext");
@@ -161,73 +147,20 @@ namespace service_data.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("service_data.Models.EntityModels.Admin", b =>
-                {
-                    b.HasOne("service_data.Models.EntityModels.User", "Admin_user_id")
-                        .WithMany()
-                        .HasForeignKey("Admin_user_idUser_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin_user_id");
-                });
-
-            modelBuilder.Entity("service_data.Models.EntityModels.Costumer", b =>
-                {
-                    b.HasOne("service_data.Models.EntityModels.User", "Costumer_user_id")
-                        .WithMany()
-                        .HasForeignKey("Costumer_user_idUser_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Costumer_user_id");
-                });
-
-            modelBuilder.Entity("service_data.Models.EntityModels.Handyman", b =>
-                {
-                    b.HasOne("service_data.Models.EntityModels.User", "Handyman_user_id")
-                        .WithMany()
-                        .HasForeignKey("Handyman_user_idUser_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Handyman_user_id");
-                });
-
             modelBuilder.Entity("service_data.Models.EntityModels.Message", b =>
                 {
-                    b.HasOne("service_data.Models.EntityModels.Costumer", "Costumer")
+                    b.HasOne("service_data.Models.EntityModels.Costumer", null)
                         .WithMany("Messages")
-                        .HasForeignKey("Costumer_id");
-
-                    b.HasOne("service_data.Models.EntityModels.Handyman", "Handyman")
-                        .WithMany("Messages")
-                        .HasForeignKey("Handyman_id");
-
-                    b.HasOne("service_data.Models.EntityModels.Ticket", "Ticket")
-                        .WithMany("Messages")
-                        .HasForeignKey("Ticket_id");
-
-                    b.Navigation("Costumer");
-
-                    b.Navigation("Handyman");
-
-                    b.Navigation("Ticket");
+                        .HasForeignKey("CostumerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("service_data.Models.EntityModels.Ticket", b =>
                 {
-                    b.HasOne("service_data.Models.EntityModels.Costumer", "Costumer")
+                    b.HasOne("service_data.Models.EntityModels.Costumer", null)
                         .WithMany("Tickets")
                         .HasForeignKey("Costumer_id");
-
-                    b.HasOne("service_data.Models.EntityModels.Handyman", "Handymen")
-                        .WithMany("Tickets")
-                        .HasForeignKey("HandymenHandyman_id");
-
-                    b.Navigation("Costumer");
-
-                    b.Navigation("Handymen");
                 });
 
             modelBuilder.Entity("service_data.Models.EntityModels.Costumer", b =>
@@ -235,18 +168,6 @@ namespace service_data.Migrations
                     b.Navigation("Messages");
 
                     b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("service_data.Models.EntityModels.Handyman", b =>
-                {
-                    b.Navigation("Messages");
-
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("service_data.Models.EntityModels.Ticket", b =>
-                {
-                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

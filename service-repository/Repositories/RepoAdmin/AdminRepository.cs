@@ -46,7 +46,7 @@ namespace service_repository.Repositories.RepoAdmin
                     {
                         Admin admin = new Admin();
                         admin.Admin_id = new Guid();
-                        admin.Admin_user_id = createdUser;
+                        //admin.User_id = createdUser;
 
                         await ctx.Admin.AddAsync(admin);
                         ctx.SaveChanges();
@@ -107,6 +107,13 @@ namespace service_repository.Repositories.RepoAdmin
         public async Task<Admin> GetOneAsync(Guid Id)
         {
             var res = await ctx.Admin.FindAsync(Id);
+            var res3 = ctx.Admin.Select(x => x);
+
+            foreach (var item in res3)
+            {
+                await Console.Out.WriteLineAsync(item.Admin_id.ToString() + item.User_id.ToString());
+            }
+
             if (res == null)
             {
                 throw new UserNotFoundException(message: $"adminUser with ID {Id} not found");
@@ -125,10 +132,10 @@ namespace service_repository.Repositories.RepoAdmin
                     throw new UserNotFoundException("User not found");
                 }
 
-                existingUser.Admin_user_id.Username = adminUser.Username != null ? adminUser.Username : existingUser.Admin_user_id.Username;
-                existingUser.Admin_user_id.Password = adminUser.Password != null ? adminUser.Password : existingUser.Admin_user_id.Password;
-                existingUser.Admin_user_id.Email = adminUser.Email != null ? adminUser.Email : existingUser.Admin_user_id.Email;
-                existingUser.Admin_user_id.Role = adminUser.Role != existingUser.Admin_user_id.Role ? adminUser.Role : existingUser.Admin_user_id.Role;
+                //existingUser.User_id.Username = adminUser.Username != null ? adminUser.Username : existingUser.User_id.Username;
+                //existingUser.User_id.Password = adminUser.Password != null ? adminUser.Password : existingUser.User_id.Password;
+                //existingUser.User_id.Email = adminUser.Email != null ? adminUser.Email : existingUser.User_id.Email;
+                //existingUser.User_id.Role = adminUser.Role != existingUser.User_id.Role ? adminUser.Role : existingUser.User_id.Role;
 
 
                 try

@@ -15,9 +15,21 @@ namespace service_data.Models.EntityModels
         public Guid Message_id { get; set; }
         public string? Content { get; set; }
         public DateTime? Created_date { get; set; }
-        public Handyman? Handyman { get; set; }
-        public Costumer? Costumer { get; set; }
-        public Ticket? Ticket { get; set; }
+        
+        [ForeignKey(nameof(Handyman))]
+        public Guid HandymanId { get; set; }
+        [NotMapped]
+        public virtual Handyman? Handyman { get; set; }
+
+        [ForeignKey(nameof(Costumer))]
+        public Guid CostumerId { get; set; }
+        [NotMapped]
+        public virtual Costumer? Costumer { get; set; }
+
+        [ForeignKey(nameof(Ticket))]
+        public Guid TicketId { get; set; }
+        [NotMapped]
+        public virtual Ticket? Ticket { get; set; }
 
     }
 }

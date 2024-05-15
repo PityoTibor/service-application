@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,9 +28,19 @@ namespace service_data.Models.EntityModels
         public DateTime? Created_date { get; set; }
         public SeverityEnum? Severity { get; set; }
         public StatusEnum? statusEnum  { get; set; }
-        public Handyman? Handymen { get; set; }
-        public Costumer? Costumer { get; set; }
-        public ICollection<Message>? Messages { get; set; }
+
+        [ForeignKey(nameof(Handyman))]
+        public Guid HandymanId { get; set; }
+        [NotMapped]
+        public virtual Handyman? Handyman { get; set; }
+
+        [ForeignKey(nameof(Costumer))]
+        public int CostumerId { get; set; }
+        [NotMapped]
+        public virtual Costumer? Costumer { get; set; }
+        
+        [NotMapped]
+        public virtual ICollection<Message>? Messages { get; set; }
 
     }
 }

@@ -28,7 +28,8 @@ namespace service_logic.LogicAdmin
 
         public Task<bool> DeleteAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            var result = adminRepository.DeleteAsync(Id);
+            return result;
         }
 
         public Task<IQueryable<Admin>> GetAllAsync()
