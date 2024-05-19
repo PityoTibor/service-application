@@ -14,15 +14,68 @@ namespace service_data.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql(ServerVersion.AutoDetect("server=localhost;database=service_database;User=tibor;Password=Devanlek4203"), x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+            optionsBuilder.UseMySql(ServerVersion.AutoDetect("server=localhost;database=service_database;User=tibor;Password=testtest"), x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Admin>()
-        //        .HasOne(b => b.Admin_user_id)
-        //        .
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            //modelBuilder.Entity<Admin>()
+            //   .HasOne(a => a.User)
+            //   .WithOne(u => u.Admin)
+            //   .HasForeignKey<Admin>(a => a.User_id);
+
+            //modelBuilder.Entity<Costumer>()
+            //   .HasOne(c => c.User)
+            //   .WithOne(u => u.Costumer)
+            //   .HasForeignKey<Costumer>(uc => uc.User_id);
+
+            //modelBuilder.Entity<Handyman>()
+            //   .HasOne(h => h.User)
+            //   .WithOne(u => u.Handyman)
+            //   .HasForeignKey<Handyman>(uh => uh.User_id);
+
+            modelBuilder.Entity<User>()
+               .HasOne(u => u.Admin)
+               .WithOne(a => a.User)
+               .HasForeignKey<Admin>(a => a.User_id);
+
+            modelBuilder.Entity<User>()
+              .HasOne(u => u.Costumer)
+              .WithOne(c => c.User)
+              .HasForeignKey<Costumer>(c => c.User_id);
+
+            modelBuilder.Entity<User>()
+              .HasOne(u => u.Handyman)
+              .WithOne(h => h.User)
+              .HasForeignKey<Handyman>(h => h.User_id);
+
+            modelBuilder.Entity<Ticket>()
+               .HasOne(t => t.Handyman)
+               .WithMany(h => h.Tickets)
+               .HasForeignKey(t => t.Handyman_id);
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Costumer)
+                .WithMany(c => c.Tickets)
+                .HasForeignKey(t => t.Costumer_id);
+            modelBuilder.Entity<Ticket>()
+                .HasMany(t => t.Messages)
+                .WithOne(m => m.Ticket)
+                .HasForeignKey(m => m.Ticket_id);
+
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Costumer)
+                .WithMany(c => c.Messages)
+                .HasForeignKey(m => m.Costumer_id);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Handyman)
+                .WithMany(h => h.Messages)
+                .HasForeignKey(m => m.Handyman_id);
+
+            base.OnModelCreating(modelBuilder);
+        }
 
 
         public DbSet<Ticket> Ticket { get; set; }
@@ -30,5 +83,7 @@ namespace service_data.Models
         public DbSet<Message> Message { get; set; }
         public DbSet<Admin> Admin { get; set; }
         public DbSet<Costumer> Costumer { get; set; }
+        public DbSet<Handyman> Handyman { get; set; }
+
     }
 }

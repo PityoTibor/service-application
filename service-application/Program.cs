@@ -6,8 +6,16 @@ using service_logic.LogicUsers;
 using service_repository.Repositories.RepoAdmin;
 using service_repository.Repositories.RepoUsers;
 using System;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
+
 builder.Services.AddControllers();
 
 // Add services to the container.

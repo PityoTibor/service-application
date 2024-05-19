@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using service_data.Models.DTOs.RequestDto;
+using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
 using service_logic;
 using service_logic.LogicAdmin;
@@ -46,6 +47,56 @@ namespace service_application.Controller
             {
 
                 throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOneAdmin(Guid id)
+        {
+            try
+            {
+
+                int startByte = 0;
+                int endByte = 500; // Example end byte
+                //int contentLength = content.Length;
+
+                if (id != Guid.Empty)
+                {
+
+                    UserResponseDto response;
+
+                    var result = await adminLogic.GetAllAsync();
+                    foreach (var item in result)
+                    {
+                        await Console.Out.WriteLineAsync(item.Admin_id.ToString() + "  "  + item.User_id.ToString() );
+                    }
+  
+                    Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
+                    Response.Headers.Add("Content-Range", $"User {startByte}-{endByte}/{result.Count()}");
+
+                    object[] tm = new object[1];
+                    var a = new
+                    {
+                        id = 1,
+                        username = "tibor",
+                        email = "tibor@valami.hu",
+                        role = 1,
+                    };
+                    //tm[0] = response;
+
+                    return Ok(tm);
+                }
+                else
+                {
+                    //var result = await userLogic.GetOneAsync(id);
+                    return Ok();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
         }
     }

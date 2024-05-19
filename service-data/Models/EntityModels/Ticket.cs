@@ -26,19 +26,17 @@ namespace service_data.Models.EntityModels
         public string? Title { get; set; }
         public string? Description { get; set; }
         public DateTime? Created_date { get; set; }
-        public SeverityEnum? Severity { get; set; }
-        public StatusEnum? statusEnum  { get; set; }
+        public SeverityEnum? SeverityEnum { get; set; }
+        public StatusEnum? StatusEnum  { get; set; }
 
-        [ForeignKey(nameof(Handyman))]
-        public Guid HandymanId { get; set; }
+        public Guid Handyman_id { get; set; }
         [NotMapped]
         public virtual Handyman? Handyman { get; set; }
 
-        [ForeignKey(nameof(Costumer))]
-        public int CostumerId { get; set; }
+        public Guid Costumer_id { get; set; }
         [NotMapped]
         public virtual Costumer? Costumer { get; set; }
-        
+
         [NotMapped]
         public virtual ICollection<Message>? Messages { get; set; }
 

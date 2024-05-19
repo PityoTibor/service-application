@@ -11,10 +11,8 @@ namespace service_data.Models.EntityModels
     public class Admin
     {
         [Key]
-        [ForeignKey(nameof(User))]
         public Guid Admin_id { get; set; }
 
-        [ForeignKey(nameof(User))]
         public Guid User_id { get; set; }
         [NotMapped]
         public virtual User User { get; set; }

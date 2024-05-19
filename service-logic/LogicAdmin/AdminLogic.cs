@@ -5,6 +5,7 @@ using service_repository.Repositories.RepoUsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,9 +33,10 @@ namespace service_logic.LogicAdmin
             return result;
         }
 
-        public Task<IQueryable<Admin>> GetAllAsync()
+        public async Task<IQueryable<Admin>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var result = await adminRepository.GetAllAsync();
+            return result;
         }
 
         public Task<Admin> GetOneAsync(Guid Id)

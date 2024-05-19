@@ -11,15 +11,15 @@ namespace service_data.Models.EntityModels
     public class Handyman
     {
         [Key]
-        [ForeignKey(nameof(User))]
         public Guid Handyman_id { get; set; }
 
-        [ForeignKey(nameof(User))]
         public Guid User_id { get; set; }
         [NotMapped]
         public virtual User User { get; set; }
-        
+
+        [NotMapped]
         public virtual ICollection<Ticket> Tickets { get; set; }
+        [NotMapped]
         public virtual ICollection<Message> Messages { get; set; }
     }
 }

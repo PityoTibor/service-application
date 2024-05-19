@@ -45,8 +45,8 @@ namespace service_repository.Repositories.RepoAdmin
                     try
                     {
                         Admin admin = new Admin();
-                        admin.Admin_id = new Guid();
-                        //admin.User_id = createdUser;
+                        admin.Admin_id = Guid.NewGuid();
+                        admin.User = createdUser;
 
                         await ctx.Admin.AddAsync(admin);
                         ctx.SaveChanges();
@@ -96,13 +96,13 @@ namespace service_repository.Repositories.RepoAdmin
             try
             {
                 var query = ctx.Admin.AsQueryable();
-                return query;
+                return await Task.FromResult(query);
             }
             catch (Exception ex)
             {
                 throw new DatabaseOperationException(message: "Failed to retrieve users", innerException: ex);
             }
-        }
+        }  
 
         public async Task<Admin> GetOneAsync(Guid Id)
         {
