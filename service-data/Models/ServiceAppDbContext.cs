@@ -14,11 +14,21 @@ namespace service_data.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql(ServerVersion.AutoDetect("server=localhost;database=Products;User=tibor;Password=Devanlek4203;"), x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+            optionsBuilder.UseMySql(ServerVersion.AutoDetect("server=localhost;database=service_database;User=tibor;Password=Devanlek4203"), x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
         }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Admin>()
+        //        .HasOne(b => b.Admin_user_id)
+        //        .
+        //}
+
 
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Message> Message { get; set; }
+        public DbSet<Admin> Admin { get; set; }
+        public DbSet<Costumer> Costumer { get; set; }
     }
 }

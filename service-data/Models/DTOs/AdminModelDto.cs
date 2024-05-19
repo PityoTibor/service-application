@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace service_repository.Interfaces
+namespace service_data.Models.DTOs
 {
-    internal class Class1
+    public class AdminModelDto
     {
     }
 }
