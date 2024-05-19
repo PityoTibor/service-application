@@ -20,7 +20,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\service-data\service-data.csproj" />
-    <ProjectReference Include="..\service-logic\service-logic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controller\" />
   </ItemGroup>
 
 </Project>

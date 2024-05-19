@@ -17,6 +17,21 @@ namespace service_data.Models
             optionsBuilder.UseMySql(ServerVersion.AutoDetect("server=localhost;database=service_database;User=tibor;Password=Devanlek4203"), x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
         }
 
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.UserProfile)
+                .WithOne(up => up.User)
+                .HasForeignKey<UserProfile>(up => up.UserId);
+
+            base.OnModelCreating(modelBuilder);
+
+
+        }
+
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<Admin>()
@@ -25,10 +40,11 @@ namespace service_data.Models
         //}
 
 
-        public DbSet<Ticket> Ticket { get; set; }
-        public DbSet<User> User { get; set; }
-        public DbSet<Message> Message { get; set; }
-        public DbSet<Admin> Admin { get; set; }
-        public DbSet<Costumer> Costumer { get; set; }
+        //public DbSet<Ticket> Ticket { get; set; }
+        //public DbSet<User> User { get; set; }
+        //public DbSet<UserProfile> UserProfile { get; set; }
+        //public DbSet<Message> Message { get; set; }
+        //public DbSet<Admin> Admin { get; set; }
+        //public DbSet<Costumer> Costumer { get; set; }
     }
 }
