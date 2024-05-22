@@ -51,22 +51,19 @@ namespace service_application.Controller
 
                     var result = await userLogic.GetAllAsync();
 
-                    
-
-
-                    //object[] tm = new object[result.Count()];
-                    //int i = 0;
-                    //foreach (var item in result)
-                    //{
-                    //    response = new UserResponseDto
-                    //    {
-                    //        Id = item.User_id.ToString(),
-                    //        Username = item.Username,
-                    //        Email = item.Email,
-                    //        Role = item.Role.ToString(),
-                    //    };
-                    //    tm[i++] = response;
-                    //}
+                    object[] tm = new object[result.Count()];
+                    int i = 0;
+                    foreach (var item in result)
+                    {
+                        response = new UserResponseDto
+                        {
+                            Id = item.User_id.ToString(),
+                            Username = item.Username,
+                            Email = item.Email,
+                            Role = item.Role.ToString(),
+                        };
+                        tm[i++] = response;
+                    }
 
                     parameters.GetResponseWithHeaders(Response, result.Count());
                     return Ok(tm);
@@ -76,7 +73,6 @@ namespace service_application.Controller
                     var result = await userLogic.GetOneAsync(id);
                     return Ok(result);
                 }
-
             }
             catch (Exception ex)
             {
@@ -111,15 +107,8 @@ namespace service_application.Controller
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-
-        private void GetHeaderParamaters()
-        { 
-            
-        }
-
     }
 }

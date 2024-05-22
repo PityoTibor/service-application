@@ -3,7 +3,7 @@
     public class HeaderParameters
     {
         int startByte = 0;
-        int endByte = 500;
+        int endByte = 9;
 
         public void GetResponseWithHeaders(HttpResponse response, int result)
         {

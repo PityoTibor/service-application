@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\service-data\service-data.csproj" />
   </ItemGroup>
 

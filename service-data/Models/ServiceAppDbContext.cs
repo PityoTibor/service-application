@@ -10,11 +10,13 @@ namespace service_data.Models
 {
     public class ServiceAppDbContext : DbContext
     {
-        public ServiceAppDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
+        public ServiceAppDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        { }
+            
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql(ServerVersion.AutoDetect("server=localhost;database=service_database;User=tibor;Password=testtest"), x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+            optionsBuilder.UseMySql(ServerVersion.AutoDetect("server=localhost;database=service_database;User=root;Password=Devanlek4203"), x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

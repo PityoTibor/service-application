@@ -24,7 +24,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("service.application.ConnectionString");
-builder.Services.AddDbContext<ServiceAppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+builder.Services.AddDbContext<ServiceAppDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+           .UseLazyLoadingProxies());
+
+
+
 builder.Services.AddScoped<IUserLogic, UserLogic>();
 builder.Services.AddScoped<IAdminLogic, AdminLogic>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

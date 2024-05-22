@@ -39,14 +39,15 @@ namespace service_logic.LogicAdmin
             return result;
         }
 
-        public Task<Admin> GetOneAsync(Guid Id)
+        public async Task<Admin> GetOneAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            var result = await adminRepository.GetOneAsync(Id);
+            return result;
         }
 
-        public Task<Admin> UpdateAsync(Guid Id, AdminEntityDto adminUser)
+        public async Task<Admin> UpdateAsync(Guid Id, AdminEntityDto adminUser)
         {
-            throw new NotImplementedException();
+            return await adminRepository.UpdateAsync(Id, adminUser);  
         }
     }
 }

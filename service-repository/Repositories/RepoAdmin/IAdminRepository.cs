@@ -14,7 +14,7 @@ namespace service_repository.Repositories.RepoAdmin
         Task<Admin> CreateAsync(AdminEntityDto admin);
         Task<Admin> GetOneAsync(Guid Id);
         Task<IQueryable<Admin>> GetAllAsync();
-        Task<Admin> UpdateAsync(Guid Id, AdminEntityDto user);
+        Task<Admin> UpdateAsync(Guid Id, AdminEntityDto admin);
         Task<bool> DeleteAsync(Guid Id);
     }
 }

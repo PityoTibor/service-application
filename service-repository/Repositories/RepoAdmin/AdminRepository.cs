@@ -131,6 +131,9 @@ namespace service_repository.Repositories.RepoAdmin
                 {
                     throw new UserNotFoundException("User not found");
                 }
+                //automapper
+                //var admin = await GetOneAsync(Id);
+                //userRepository.UpdateAsync(admin.User_id, adminUser);
 
                 //existingUser.User_id.Username = adminUser.Username != null ? adminUser.Username : existingUser.User_id.Username;
                 //existingUser.User_id.Password = adminUser.Password != null ? adminUser.Password : existingUser.User_id.Password;

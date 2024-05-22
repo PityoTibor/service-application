@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using service_application.Controller.Helper;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
@@ -20,7 +21,7 @@ namespace service_application.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] AdminEntityDto admin)
+        public async Task<IActionResult> CreateAdmin([FromBody] AdminEntityDto admin)
         {
             try
             {
@@ -56,37 +57,37 @@ namespace service_application.Controller
             try
             {
 
-                int startByte = 0;
-                int endByte = 500; // Example end byte
-                //int contentLength = content.Length;
+                HeaderParameters parameters = new HeaderParameters();
 
-                if (id != Guid.Empty)
+                if (id == Guid.Empty)
                 {
-
-                    UserResponseDto response;
+                    AdminResponseDto response;
 
                     var result = await adminLogic.GetAllAsync();
                     foreach (var item in result)
                     {
-                        await Console.Out.WriteLineAsync(item.Admin_id.ToString() + "  "  + item.User_id.ToString() );
+                        await Console.Out.WriteLineAsync(item.ToString());
                     }
-  
 
-                    object[] tm = new object[1];
-                    var a = new
+                    object[] tm = new object[result.Count()];
+                    int i = 0;  
+                    foreach (var item in result)
                     {
-                        id = 1,
-                        username = "tibor",
-                        email = "tibor@valami.hu",
-                        role = 1,
-                    };
-                    //tm[0] = response;
+                        response = new AdminResponseDto
+                        {
+                            Id = item.Admin_id,
+                            //kellene majd wrapper
+                            //UserModelDto = item.User;
+                        };
+                        tm[i++] = response;
+                    }
 
+                    parameters.GetResponseWithHeaders(Response, result.Count());
                     return Ok(tm);
                 }
                 else
                 {
-                    //var result = await userLogic.GetOneAsync(id);
+                    var result = await adminLogic.GetOneAsync(id);
                     return Ok();
                 }
 
@@ -95,6 +96,20 @@ namespace service_application.Controller
             {
 
                 throw ex;
+            }
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdateUser(Guid id, AdminEntityDto adminEntityDto)
+        {
+            try
+            {
+                await adminLogic.UpdateAsync(id, adminEntityDto);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }
