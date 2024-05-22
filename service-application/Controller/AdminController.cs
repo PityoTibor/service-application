@@ -71,8 +71,6 @@ namespace service_application.Controller
                         await Console.Out.WriteLineAsync(item.Admin_id.ToString() + "  "  + item.User_id.ToString() );
                     }
   
-                    Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
-                    Response.Headers.Add("Content-Range", $"User {startByte}-{endByte}/{result.Count()}");
 
                     object[] tm = new object[1];
                     var a = new

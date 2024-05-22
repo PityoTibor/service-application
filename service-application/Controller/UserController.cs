@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
+using service_application.Controller.Helper;
 using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
 using service_logic;
@@ -41,37 +42,33 @@ namespace service_application.Controller
         {
             try
             {
-
-                int startByte = 0;
-                int endByte = 500; // Example end byte
-                //int contentLength = content.Length;
-
+                HeaderParameters parameters = new HeaderParameters();
+                
                 if (id == Guid.Empty)
                 {
 
                     UserResponseDto response;
 
                     var result = await userLogic.GetAllAsync();
-                    response = new UserResponseDto
-                    { 
-                        Id = result.First().User_id.ToString(),
-                        Username = result.First().Username,
-                        Email = result.First().Email,
-                        Role = result.First().Role.ToString(),
-                    };
-                    Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
-                    Response.Headers.Add("Content-Range", $"User {startByte}-{endByte}/{result.Count()}");
 
-                    object[] tm = new object[1];
-                    var a = new
-                    {
-                        id = 1,
-                        username = "tibor",
-                        email = "tibor@valami.hu",
-                        role = 1,
-                    };
-                    tm[0] = response;
+                    
 
+
+                    //object[] tm = new object[result.Count()];
+                    //int i = 0;
+                    //foreach (var item in result)
+                    //{
+                    //    response = new UserResponseDto
+                    //    {
+                    //        Id = item.User_id.ToString(),
+                    //        Username = item.Username,
+                    //        Email = item.Email,
+                    //        Role = item.Role.ToString(),
+                    //    };
+                    //    tm[i++] = response;
+                    //}
+
+                    parameters.GetResponseWithHeaders(Response, result.Count());
                     return Ok(tm);
                 }
                 else
@@ -83,7 +80,6 @@ namespace service_application.Controller
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
@@ -118,6 +114,11 @@ namespace service_application.Controller
 
                 throw;
             }
+        }
+
+        private void GetHeaderParamaters()
+        { 
+            
         }
 
     }
