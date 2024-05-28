@@ -10,10 +10,10 @@ namespace service_logic.LogicAdmin
 {
     public interface IAdminLogic
     {
-        Task<Admin> CreateAsync(AdminEntityDto user);
+        Task<Admin> CreateAsync(CreateAdminEntityDto user);
         Task<Admin> GetOneAsync(Guid Id);
         Task<IQueryable<Admin>> GetAllAsync();
-        Task<Admin> UpdateAsync(Guid Id, AdminEntityDto user);
+        Task<Admin> UpdateAsync(Guid Id, CreateAdminEntityDto user);
         Task<bool> DeleteAsync(Guid Id);
     }
 }

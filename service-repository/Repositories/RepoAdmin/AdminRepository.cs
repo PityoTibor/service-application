@@ -24,7 +24,7 @@ namespace service_repository.Repositories.RepoAdmin
             this.userRepository = userRepository;
         }
         //kell majd dto, meg lehetséges, hogy uj migracio is kell
-        public async Task<Admin> CreateAsync(AdminEntityDto adminUser)
+        public async Task<Admin> CreateAsync(CreateAdminEntityDto adminUser)
         {
             //kell majd egy mapper a userre, vagy egy factory
             User user = new User()
@@ -121,7 +121,7 @@ namespace service_repository.Repositories.RepoAdmin
             return res;
         }
 
-        public async Task<Admin> UpdateAsync(Guid Id, AdminEntityDto adminUser)
+        public async Task<Admin> UpdateAsync(Guid Id, CreateAdminEntityDto adminUser)
         {
             if (IsValidAdmin(adminUser))
             {
@@ -132,7 +132,7 @@ namespace service_repository.Repositories.RepoAdmin
                     throw new UserNotFoundException("User not found");
                 }
                 //automapper
-                //var admin = await GetOneAsync(Id);
+                var admin = await GetOneAsync(Id);
                 //userRepository.UpdateAsync(admin.User_id, adminUser);
 
                 //existingUser.User_id.Username = adminUser.Username != null ? adminUser.Username : existingUser.User_id.Username;
@@ -160,12 +160,12 @@ namespace service_repository.Repositories.RepoAdmin
 
         private bool IsValidAdmin(Object admin)
         {
-            if (admin is AdminEntityDto)
+            if (admin is CreateAdminEntityDto)
             {
-                return (admin as AdminEntityDto).Username != null && (admin as AdminEntityDto).Username.GetType() == typeof(string) &&
-                (admin as AdminEntityDto).Password != null && (admin as AdminEntityDto).Password.GetType() == typeof(string) &&
-                (admin as AdminEntityDto).Email != null && (admin as AdminEntityDto).Email.GetType() == typeof(string) &&
-                (admin as AdminEntityDto).Role != null && (admin as AdminEntityDto).Role.GetType() == typeof(RoleEnum);
+                return (admin as CreateAdminEntityDto).Username != null && (admin as CreateAdminEntityDto).Username.GetType() == typeof(string) &&
+                (admin as CreateAdminEntityDto).Password != null && (admin as CreateAdminEntityDto).Password.GetType() == typeof(string) &&
+                (admin as CreateAdminEntityDto).Email != null && (admin as CreateAdminEntityDto).Email.GetType() == typeof(string) &&
+                (admin as CreateAdminEntityDto).Role != null && (admin as CreateAdminEntityDto).Role.GetType() == typeof(RoleEnum);
             }
             else
             {

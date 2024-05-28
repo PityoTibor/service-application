@@ -11,10 +11,10 @@ namespace service_repository.Repositories.RepoAdmin
 {
     public interface IAdminRepository
     {
-        Task<Admin> CreateAsync(AdminEntityDto admin);
+        Task<Admin> CreateAsync(CreateAdminEntityDto admin);
         Task<Admin> GetOneAsync(Guid Id);
         Task<IQueryable<Admin>> GetAllAsync();
-        Task<Admin> UpdateAsync(Guid Id, AdminEntityDto admin);
+        Task<Admin> UpdateAsync(Guid Id, CreateAdminEntityDto admin);
         Task<bool> DeleteAsync(Guid Id);
     }
 }

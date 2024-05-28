@@ -21,7 +21,7 @@ namespace service_application.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAdmin([FromBody] AdminEntityDto admin)
+        public async Task<IActionResult> CreateAdmin([FromBody] CreateAdminEntityDto admin)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace service_application.Controller
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdateUser(Guid id, AdminEntityDto adminEntityDto)
+        public async Task<IActionResult> UpdateUser(Guid id, CreateAdminEntityDto adminEntityDto)
         {
             try
             {

@@ -7,6 +7,8 @@ using service_repository.Repositories.RepoAdmin;
 using service_repository.Repositories.RepoUsers;
 using System;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,25 +18,21 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     });
 
-builder.Services.AddControllers();
-
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("service.application.ConnectionString");
 builder.Services.AddDbContext<ServiceAppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
            .UseLazyLoadingProxies());
 
-
-
 builder.Services.AddScoped<IUserLogic, UserLogic>();
 builder.Services.AddScoped<IAdminLogic, AdminLogic>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
+// Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {

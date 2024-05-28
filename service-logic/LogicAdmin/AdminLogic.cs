@@ -21,7 +21,7 @@ namespace service_logic.LogicAdmin
             this.userRepository = userRepository;
         }
 
-        public Task<Admin> CreateAsync(AdminEntityDto adminUser)
+        public Task<Admin> CreateAsync(CreateAdminEntityDto adminUser)
         {
             var createdAdminUser = adminRepository.CreateAsync(adminUser);
             return createdAdminUser;
@@ -45,7 +45,7 @@ namespace service_logic.LogicAdmin
             return result;
         }
 
-        public async Task<Admin> UpdateAsync(Guid Id, AdminEntityDto adminUser)
+        public async Task<Admin> UpdateAsync(Guid Id, CreateAdminEntityDto adminUser)
         {
             return await adminRepository.UpdateAsync(Id, adminUser);  
         }
