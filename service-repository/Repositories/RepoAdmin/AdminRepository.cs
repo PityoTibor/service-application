@@ -109,10 +109,10 @@ namespace service_repository.Repositories.RepoAdmin
             var res = await ctx.Admin.FindAsync(Id);
             var res3 = ctx.Admin.Select(x => x);
 
-            foreach (var item in res3)
-            {
-                await Console.Out.WriteLineAsync(item.Admin_id.ToString() + item.User_id.ToString());
-            }
+            //foreach (var item in res3)
+            //{
+            //    await Console.Out.WriteLineAsync(item.Admin_id.ToString() + item.User_id.ToString());
+            //}
 
             if (res == null)
             {
@@ -125,15 +125,24 @@ namespace service_repository.Repositories.RepoAdmin
         {
             if (IsValidAdmin(adminUser))
             {
-                var existingUser = await ctx.Admin.FirstOrDefaultAsync(x => x.Admin_id == Id);
+                var existingAdminUser = await ctx.Admin.FirstOrDefaultAsync(x => x.Admin_id == Id);
 
-                if (existingUser == null)
+                if (existingAdminUser == null)
                 {
                     throw new UserNotFoundException("User not found");
                 }
                 //automapper
                 var admin = await GetOneAsync(Id);
-                //userRepository.UpdateAsync(admin.User_id, adminUser);
+
+                //itt ki kell szedni 
+                User user = new User()
+                { 
+                    Username = adminUser.Username,
+                    Email = adminUser.Email,
+                    Password = adminUser.Password,
+                    Role = adminUser.Role
+                };
+                await userRepository.UpdateAsync(admin.User_id, user);
 
                 //existingUser.User_id.Username = adminUser.Username != null ? adminUser.Username : existingUser.User_id.Username;
                 //existingUser.User_id.Password = adminUser.Password != null ? adminUser.Password : existingUser.User_id.Password;
@@ -143,9 +152,9 @@ namespace service_repository.Repositories.RepoAdmin
 
                 try
                 {
-                    ctx.Admin.Update(existingUser);
+                    ctx.Admin.Update(existingAdminUser);
                     await ctx.SaveChangesAsync();
-                    return existingUser;
+                    return existingAdminUser;
                 }
                 catch (DbUpdateException ex)
                 {

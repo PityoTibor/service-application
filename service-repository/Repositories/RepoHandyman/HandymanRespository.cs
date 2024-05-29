@@ -1,4 +1,5 @@
-﻿using service_data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using service_data.Models;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
@@ -21,7 +22,7 @@ namespace service_repository.Repositories.RepoHandyman
             this.ctx = ctx;
             this.userRepository = userRepository;
         }
-        public async Task<HandymanResponseDto> CreateAsync(CreateHandymanEntityDto handymanUser)
+        public async Task<Handyman> CreateAsync(CreateHandymanEntityDto handymanUser)
         {
             User user = new User()
             {
@@ -47,7 +48,7 @@ namespace service_repository.Repositories.RepoHandyman
                         await ctx.Handyman.AddAsync(handyman);
                         ctx.SaveChanges();
                         //ez igy szar kell majd erre valami
-                        return new HandymanResponseDto();
+                        return new Handyman();
                     }
                     catch (Exception ex)
                     {
@@ -100,26 +101,67 @@ namespace service_repository.Repositories.RepoHandyman
             }
         }
 
-        public Task<Handyman> GetOneAsync(Guid Id)
+        public async Task<Handyman> GetOneAsync(Guid Id)
         {
-            //var res = await ctx.Admin.FindAsync(Id);
-            //var res3 = ctx.Admin.Select(x => x);
+            var res = await ctx.Handyman.FindAsync(Id);
+            //var res3 = ctx.Handyman.Select(x => x);
 
             //foreach (var item in res3)
             //{
             //    await Console.Out.WriteLineAsync(item.Admin_id.ToString() + item.User_id.ToString());
             //}
 
-            //if (res == null)
-            //{
-            //    throw new UserNotFoundException(message: $"adminUser with ID {Id} not found");
-            //}
-            //return res;
+            if (res == null)
+            {
+                throw new UserNotFoundException(message: $"adminUser with ID {Id} not found");
+            }
+            return res;
         }
 
-        public Task<HandymanResponseDto> UpdateAsync(Guid Id, CreateHandymanEntityDto handyman)
+        public async Task<Handyman> UpdateAsync(Guid Id, CreateHandymanEntityDto handymanUser)
         {
-            throw new NotImplementedException();
+            if (IsValidAdmin(handymanUser))
+            {
+                var existingHandyman = await ctx.Handyman.FirstOrDefaultAsync(x => x.Handyman_id == Id);
+
+                if (existingHandyman == null)
+                {
+                    throw new UserNotFoundException("User not found");
+                }
+                //automapper
+                var admin = await GetOneAsync(Id);
+
+                //itt ki kell szedni 
+                User user = new User()
+                {
+                    Username = handymanUser.Username,
+                    Email = handymanUser.Email,
+                    Password = handymanUser.Password,
+                    Role = handymanUser.Role
+                };
+                await userRepository.UpdateAsync(admin.User_id, user);
+
+                //existingUser.User_id.Username = adminUser.Username != null ? adminUser.Username : existingUser.User_id.Username;
+                //existingUser.User_id.Password = adminUser.Password != null ? adminUser.Password : existingUser.User_id.Password;
+                //existingUser.User_id.Email = adminUser.Email != null ? adminUser.Email : existingUser.User_id.Email;
+                //existingUser.User_id.Role = adminUser.Role != existingUser.User_id.Role ? adminUser.Role : existingUser.User_id.Role;
+
+
+                try
+                {
+                    ctx.Handyman.Update(existingHandyman);
+                    await ctx.SaveChangesAsync();
+                    return existingHandyman;
+                }
+                catch (DbUpdateException ex)
+                {
+                    throw new DatabaseOperationException("Error updating user", ex);
+                }
+            }
+            else
+            {
+                throw new InvalidUserException(message: "The object is not of the expected type.");
+            }
         }
 
         private bool IsValidAdmin(Object handyman)

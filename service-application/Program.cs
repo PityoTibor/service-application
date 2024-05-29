@@ -9,6 +9,8 @@ using System;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
+using service_repository.Repositories.RepoHandyman;
+using service_logic.LogicHandyman;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,10 +26,14 @@ builder.Services.AddDbContext<ServiceAppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
            .UseLazyLoadingProxies());
 
-builder.Services.AddScoped<IUserLogic, UserLogic>();
-builder.Services.AddScoped<IAdminLogic, AdminLogic>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserLogic, UserLogic>();
+
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IAdminLogic, AdminLogic>();
+
+builder.Services.AddScoped<IHandymanRepository, HandymanRespository>();
+builder.Services.AddScoped<IHandymanLogic, HandymanLogic>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
