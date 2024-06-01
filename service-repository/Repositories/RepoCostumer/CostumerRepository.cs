@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using service_data.Models;
 using service_data.Models.DTOs.RequestDto;
-using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
 using service_repository.Exceptions;
 using service_repository.Repositories.RepoUsers;
@@ -11,53 +10,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace service_repository.Repositories.RepoHandyman
+namespace service_repository.Repositories.RepoCostumer
 {
-    public class HandymanRespository : IHandymanRepository
+    public class CostumerRepository : ICostumerRepository
     {
         private readonly ServiceAppDbContext ctx;
         private readonly IUserRepository userRepository;
-        public HandymanRespository(ServiceAppDbContext ctx, IUserRepository userRepository)
+        public CostumerRepository(ServiceAppDbContext ctx, IUserRepository userRepository)
         {
             this.ctx = ctx;
             this.userRepository = userRepository;
         }
-        public async Task<Handyman> CreateAsync(CreateHandymanEntityDto handymanUser)
+        public async Task<Costumer> CreateAsync(CreateCostumerEntityDto costumerUser)
         {
             User user = new User()
             {
-                Email = handymanUser.Email,
-                Password = handymanUser.Password,
-                Role = handymanUser.Role,
-                Username = handymanUser.Username,
+                Email = costumerUser.Email,
+                Password = costumerUser.Password,
+                Role = costumerUser.Role,
+                Username = costumerUser.Username,
                 User_id = new Guid()
             };
 
             var createdUser = await userRepository.CreateAsync(user);
 
-            if (handymanUser != null)
+            if (costumerUser != null)
             {
-                if (IsValidAdmin(handymanUser))
+                if (IsValidAdmin(costumerUser))
                 {
                     try
                     {
-                        Handyman handyman = new Handyman();
-                        handyman.Handyman_id = Guid.NewGuid();
-                        handyman.User = createdUser;
+                        Costumer costumer = new Costumer();
+                        costumer.Costumer_id = Guid.NewGuid();
+                        costumer.User = createdUser;
 
-                        await ctx.Handyman.AddAsync(handyman);
+                        await ctx.Costumer.AddAsync(costumer);
                         ctx.SaveChanges();
                         //ez igy szar kell majd erre valami
-                        return new Handyman();
+                        return new Costumer();
                     }
                     catch (Exception ex)
                     {
-                        throw new DatabaseOperationException(message: "Failed to save handyman", innerException: ex);
+                        throw new DatabaseOperationException(message: "Failed to save costumer", innerException: ex);
                     }
                 }
                 else
                 {
-                    throw new InvalidUserException(message: "Invalid user data") { message = "Invalid handyman data" };
+                    throw new InvalidUserException(message: "Invalid user data") { message = "Invalid costumer data" };
                 }
             }
             else
@@ -68,42 +67,42 @@ namespace service_repository.Repositories.RepoHandyman
 
         public async Task<bool> DeleteAsync(Guid Id)
         {
-            var handymanUser = await GetOneAsync(Id);
-            if (handymanUser != null)
+            var costumerUser = await GetOneAsync(Id);
+            if (costumerUser != null)
             {
                 try
                 {
-                    ctx.Handyman.Remove(handymanUser);
+                    ctx.Costumer.Remove(costumerUser);
                     await ctx.SaveChangesAsync();
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    throw new DatabaseOperationException(message: "Failed to delete handymanUser", innerException: ex);
+                    throw new DatabaseOperationException(message: "Failed to delete costumerUser", innerException: ex);
                 }
             }
             else
             {
-                throw new UserNotFoundException(message: $"handymanUser with ID {Id} not found");
+                throw new UserNotFoundException(message: $"costumerUser with ID {Id} not found");
             }
         }
 
-        public async Task<IQueryable<Handyman>> GetAllAsync()
+        public async Task<IQueryable<Costumer>> GetAllAsync()
         {
             try
             {
-                var query = ctx.Handyman.AsQueryable();
+                var query = ctx.Costumer.AsQueryable();
                 return await Task.FromResult(query);
             }
             catch (Exception ex)
             {
-                throw new DatabaseOperationException(message: "Failed to retrieve handyman", innerException: ex);
+                throw new DatabaseOperationException(message: "Failed to retrieve costumer", innerException: ex);
             }
         }
 
-        public async Task<Handyman> GetOneAsync(Guid Id)
+        public async Task<Costumer> GetOneAsync(Guid Id)
         {
-            var res = await ctx.Handyman.FindAsync(Id);
+            var res = await ctx.Costumer.FindAsync(Id);
             //var res3 = ctx.Handyman.Select(x => x);
 
             //foreach (var item in res3)
@@ -113,33 +112,33 @@ namespace service_repository.Repositories.RepoHandyman
 
             if (res == null)
             {
-                throw new UserNotFoundException(message: $"adminUser with ID {Id} not found");
+                throw new UserNotFoundException(message: $"costumerUser with ID {Id} not found");
             }
             return res;
         }
 
-        public async Task<Handyman> UpdateAsync(Guid Id, CreateHandymanEntityDto handymanUser)
+        public async Task<Costumer> UpdateAsync(Guid Id, CreateCostumerEntityDto costumerUser)
         {
-            if (IsValidAdmin(handymanUser))
+            if (IsValidAdmin(costumerUser))
             {
-                var existingHandyman = await ctx.Handyman.FirstOrDefaultAsync(x => x.Handyman_id == Id);
+                var existingCostumer = await ctx.Costumer.FirstOrDefaultAsync(x => x.Costumer_id == Id);
 
-                if (existingHandyman == null)
+                if (existingCostumer == null)
                 {
                     throw new UserNotFoundException("User not found");
                 }
                 //automapper
-                var handyman = await GetOneAsync(Id);
+                var costumer = await GetOneAsync(Id);
 
                 //itt ki kell szedni 
                 User user = new User()
                 {
-                    Username = handymanUser.Username,
-                    Email = handymanUser.Email,
-                    Password = handymanUser.Password,
-                    Role = handymanUser.Role
+                    Username = costumerUser.Username,
+                    Email = costumerUser.Email,
+                    Password = costumerUser.Password,
+                    Role = costumerUser.Role
                 };
-                await userRepository.UpdateAsync(handyman.User_id, user);
+                await userRepository.UpdateAsync(costumer.User_id, user);
 
                 //existingUser.User_id.Username = adminUser.Username != null ? adminUser.Username : existingUser.User_id.Username;
                 //existingUser.User_id.Password = adminUser.Password != null ? adminUser.Password : existingUser.User_id.Password;
@@ -149,9 +148,9 @@ namespace service_repository.Repositories.RepoHandyman
 
                 try
                 {
-                    ctx.Handyman.Update(existingHandyman);
+                    ctx.Costumer.Update(existingCostumer);
                     await ctx.SaveChangesAsync();
-                    return existingHandyman;
+                    return existingCostumer;
                 }
                 catch (DbUpdateException ex)
                 {
@@ -164,14 +163,14 @@ namespace service_repository.Repositories.RepoHandyman
             }
         }
 
-        private bool IsValidAdmin(Object handyman)
+        private bool IsValidAdmin(Object costumer)
         {
-            if (handyman is CreateHandymanEntityDto)
+            if (costumer is CreateCostumerEntityDto)
             {
-                return (handyman as CreateHandymanEntityDto).Username != null && (handyman as CreateHandymanEntityDto).Username.GetType() == typeof(string) &&
-                (handyman as CreateHandymanEntityDto).Password != null && (handyman as CreateHandymanEntityDto).Password.GetType() == typeof(string) &&
-                (handyman as CreateHandymanEntityDto).Email != null && (handyman as CreateHandymanEntityDto).Email.GetType() == typeof(string) &&
-                (handyman as CreateHandymanEntityDto).Role != null && (handyman as CreateHandymanEntityDto).Role.GetType() == typeof(RoleEnum);
+                return (costumer as CreateCostumerEntityDto).Username != null && (costumer as CreateCostumerEntityDto).Username.GetType() == typeof(string) &&
+                (costumer as CreateCostumerEntityDto).Password != null && (costumer as CreateCostumerEntityDto).Password.GetType() == typeof(string) &&
+                (costumer as CreateCostumerEntityDto).Email != null && (costumer as CreateCostumerEntityDto).Email.GetType() == typeof(string) &&
+                (costumer as CreateCostumerEntityDto).Role != null && (costumer as CreateCostumerEntityDto).Role.GetType() == typeof(RoleEnum);
             }
             else
             {

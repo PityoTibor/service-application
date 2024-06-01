@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace service_data.Models.DTOs.RequestDto
 {
-    public class CreateHandymanEntityDto
+    public class CreateCostumerEntityDto
     {
         public string? Username { get; set; }
         public string? Email { get; set; }

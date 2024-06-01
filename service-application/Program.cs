@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using service_repository.Repositories.RepoHandyman;
 using service_logic.LogicHandyman;
+using service_repository.Repositories.RepoCostumer;
+using service_logic.LogicCostumer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +36,9 @@ builder.Services.AddScoped<IAdminLogic, AdminLogic>();
 
 builder.Services.AddScoped<IHandymanRepository, HandymanRespository>();
 builder.Services.AddScoped<IHandymanLogic, HandymanLogic>();
+
+builder.Services.AddScoped<ICostumerRepository, CostumerRepository>();
+builder.Services.AddScoped<ICostumerLogic, CostumerLogic>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,31 +1,28 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using service_application.Controller.Helper;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
-using service_logic;
-using service_logic.LogicAdmin;
+using service_logic.LogicCostumer;
 using service_logic.LogicHandyman;
-using service_logic.LogicUsers;
 
 namespace service_application.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HandymanController : ControllerBase
+    public class CostumerController : ControllerBase
     {
-        private readonly IHandymanLogic handymanLogic;
-        public HandymanController(IHandymanLogic handymanLogic)
+        private readonly ICostumerLogic costumerLogic;
+        public CostumerController(ICostumerLogic costumerLogic)
         {
-            this.handymanLogic = handymanLogic;
+            this.costumerLogic = costumerLogic;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateHandyman([FromBody] CreateHandymanEntityDto handyman)
+        public async Task<IActionResult> CreateCostumer([FromBody] CreateCostumerEntityDto costumer)
         {
             try
             {
-                var result = await handymanLogic.CreateAsync(handyman);
+                var result = await costumerLogic.CreateAsync(costumer);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -43,17 +40,16 @@ namespace service_application.Controller
 
                 if (id == Guid.Empty)
                 {
-
-                    HandymanResponseDto response;
-                    var result = await handymanLogic.GetAllAsync();
+                    CostumerResponseDto response;
+                    var result = await costumerLogic.GetAllAsync();
 
                     object[] tm = new object[result.Count()];
                     int i = 0;
                     foreach (var item in result)
                     {
-                        response = new HandymanResponseDto
+                        response = new CostumerResponseDto
                         {
-                            Handyman_id = item.Handyman_id,
+                            Costumer_id = item.Costumer_id,
                             User_id = item.User_id,
                             User = item.User
                         };
@@ -65,7 +61,7 @@ namespace service_application.Controller
                 }
                 else
                 {
-                    var result = await handymanLogic.GetOneAsync(id);
+                    var result = await costumerLogic.GetOneAsync(id);
                     return Ok(result);
                 }
             }
@@ -77,11 +73,11 @@ namespace service_application.Controller
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public async Task<IActionResult> DeleteHandyman([FromRoute] Guid Id)
+        public async Task<IActionResult> DeleteCostumer([FromRoute] Guid Id)
         {
             try
             {
-                var result = await handymanLogic.DeleteAsync(Id);
+                var result = await costumerLogic.DeleteAsync(Id);
                 //return StatusCode(200, "asdasd");
                 return Ok(result);
             }
@@ -93,11 +89,11 @@ namespace service_application.Controller
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdateUser(Guid id, CreateHandymanEntityDto adminEntityDto)
+        public async Task<IActionResult> UpdateUser(Guid id, CreateCostumerEntityDto costumerEntityDto)
         {
             try
             {
-                await handymanLogic.UpdateAsync(id, adminEntityDto);
+                await costumerLogic.UpdateAsync(id, costumerEntityDto);
                 return Ok();
             }
             catch (Exception)
