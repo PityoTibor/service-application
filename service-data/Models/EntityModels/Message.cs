@@ -18,14 +18,14 @@ namespace service_data.Models.EntityModels
 
 
         [ForeignKey(nameof(Handyman))]
-        public Guid Handyman_id { get; set; }
+        public Guid? Handyman_id { get; set; }
         [NotMapped]
         public virtual Handyman? Handyman { get; set; }
 
-        public Guid Costumer_id { get; set; }
+        public Guid? Costumer_id { get; set; }
         [NotMapped]
         public virtual Costumer? Costumer { get; set; }
-        public Guid Ticket_id { get; set; }
+        public Guid? Ticket_id { get; set; }
         [NotMapped]
         public virtual Ticket? Ticket { get; set; }
 

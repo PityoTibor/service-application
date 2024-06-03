@@ -46,7 +46,6 @@ namespace service_application.Controller
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -56,9 +55,7 @@ namespace service_application.Controller
         {
             try
             {
-
                 HeaderParameters parameters = new HeaderParameters();
-
                 if (id == Guid.Empty)
                 {
                     AdminResponseDto response;
