@@ -104,12 +104,6 @@ namespace service_repository.Repositories.RepoHandyman
         public async Task<Handyman> GetOneAsync(Guid Id)
         {
             var res = await ctx.Handyman.FindAsync(Id);
-            //var res3 = ctx.Handyman.Select(x => x);
-
-            //foreach (var item in res3)
-            //{
-            //    await Console.Out.WriteLineAsync(item.Admin_id.ToString() + item.User_id.ToString());
-            //}
 
             if (res == null)
             {
