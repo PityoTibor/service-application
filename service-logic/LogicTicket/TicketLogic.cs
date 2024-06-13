@@ -1,6 +1,7 @@
 ﻿using service_data.Models.DTOs.RequestDto;
 using service_data.Models.EntityModels;
 using service_repository.Repositories.RepoMessage;
+using service_repository.Repositories.RepoTicket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,30 +12,40 @@ namespace service_logic.LogicTicket
 {
     public class TicketLogic : ITicketLogic
     {
-        
-        public Task<Ticket> CreateAsync(CreateTicketEntityDto message)
+
+        public readonly ITicketRepository ticketRepository;
+        public TicketLogic(ITicketRepository ticketRepository)
         {
-            throw new NotImplementedException();
+            this.ticketRepository = ticketRepository;
+        }
+        public async Task<Ticket> CreateAsync(CreateTicketEntityDto ticket)
+        {
+            var result = await ticketRepository.CreateAsync(ticket);
+            return result;
         }
 
-        public Task<bool> DeleteAsync(Guid Id)
+        public async Task<bool> DeleteAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            var result = await ticketRepository.DeleteAsync(Id);
+            return result;
         }
 
-        public Task<IQueryable<Ticket>> GetAllAsync()
+        public async Task<IQueryable<Ticket>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var result = await ticketRepository.GetAllAsync();
+            return result;
         }
 
-        public Task<Ticket> GetOneAsync(Guid Id)
+        public async Task<Ticket> GetOneAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            var result = await ticketRepository.GetOneAsync(Id);
+            return result;
         }
 
-        public Task<Ticket> UpdateAsync(Guid Id, CreateTicketEntityDto message)
+        public async Task<Ticket> UpdateAsync(Guid Id, CreateTicketEntityDto message)
         {
-            throw new NotImplementedException();
+            var result = await ticketRepository.UpdateAsync(Id, message);
+            return result;
         }
     }
 }

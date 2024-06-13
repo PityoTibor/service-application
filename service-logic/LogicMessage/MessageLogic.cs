@@ -41,9 +41,9 @@ namespace service_logic.LogicMessage
             return result;
         }
 
-        public Task<Message> UpdateAsync(Guid Id, CreateMessageEntityDto message)
+        public async Task<Message> UpdateAsync(Guid Id, CreateMessageEntityDto message)
         {
-            var result = messageRepository.UpdateAsync(Id, message);
+            var result =  await messageRepository.UpdateAsync(Id, message);
             return result;
         }
     }
