@@ -16,6 +16,10 @@ namespace service_application.Controller
     {
         private readonly ITicketLogic ticketLogic;
 
+        public TicketController(ITicketLogic ticketLogic)
+        {
+            this.ticketLogic = ticketLogic;
+        }
         [HttpPost]
         public async Task<IActionResult> CreateTicket([FromBody] CreateTicketEntityDto ticket)
         {
@@ -40,18 +44,23 @@ namespace service_application.Controller
                 if (id == Guid.Empty)
                 {
 
-                    HandymanResponseDto response;
+                    TicketResponseDto response;
                     var result = await ticketLogic.GetAllAsync();
 
                     object[] tm = new object[result.Count()];
                     int i = 0;
                     foreach (var item in result)
                     {
-                        response = new HandymanResponseDto
+                        response = new TicketResponseDto
                         {
-                            Handyman_id = item.Handyman_id,
-                            User_id = item.User_id,
-                            User = item.User
+                            Ticket_id = item.Ticket_id,
+                            Title = item.Title,
+                            Description = item.Description,
+                            Created_date = DateTime.Now,
+                            SeverityEnum = item.SeverityEnum,
+                            StatusEnum = item.StatusEnum,
+                            Costumer_id = item.Costumer_id,
+                            Messages = item.Messages,
                         };
                         tm[i++] = response;
                     }
@@ -61,13 +70,44 @@ namespace service_application.Controller
                 }
                 else
                 {
-                    var result = await handymanLogic.GetOneAsync(id);
+                    var result = await ticketLogic.GetOneAsync(id);
                     return Ok(result);
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        [HttpDelete]
+        [Route("{Id:Guid}")]
+        public async Task<IActionResult> DeleteCostumer([FromRoute] Guid Id)
+        {
+            try
+            {
+                var result = await ticketLogic.DeleteAsync(Id);
+                //return StatusCode(200, "asdasd");
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdateMessage(Guid id, CreateTicketEntityDto? ticketEntityDto)
+        {
+            try
+            {
+                await ticketLogic.UpdateAsync(id, ticketEntityDto);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }

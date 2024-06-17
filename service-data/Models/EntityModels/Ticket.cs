@@ -29,11 +29,11 @@ namespace service_data.Models.EntityModels
         public SeverityEnum? SeverityEnum { get; set; }
         public StatusEnum? StatusEnum  { get; set; }
 
-        public Guid Handyman_id { get; set; }
+        public Guid? Handyman_id { get; set; }
         [NotMapped]
         public virtual Handyman? Handyman { get; set; }
 
-        public Guid Costumer_id { get; set; }
+        public Guid? Costumer_id { get; set; }
         [NotMapped]
         public virtual Costumer? Costumer { get; set; }
 

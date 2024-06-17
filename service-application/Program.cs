@@ -15,6 +15,8 @@ using service_repository.Repositories.RepoCostumer;
 using service_logic.LogicCostumer;
 using service_repository.Repositories.RepoMessage;
 using service_logic.LogicMessage;
+using service_repository.Repositories.RepoTicket;
+using service_logic.LogicTicket;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +46,9 @@ builder.Services.AddScoped<ICostumerLogic, CostumerLogic>();
 
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IMessageLogic, MessageLogic>();
+
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<ITicketLogic, TicketLogic>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

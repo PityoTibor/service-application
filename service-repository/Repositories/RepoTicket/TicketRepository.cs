@@ -18,17 +18,17 @@ namespace service_repository.Repositories.RepoTicket
         {
             this.ctx = ctx;
         }
-        public async Task<Ticket> CreateAsync(CreateTicketEntityDto message)
+        public async Task<Ticket> CreateAsync(CreateTicketEntityDto newTicket)
         {
             Ticket ticket = new Ticket()
             { 
                 Ticket_id = Guid.NewGuid(),
-                Title = message.Title,
-                Description = message.Description,
+                Title = newTicket.Title,
+                Description = newTicket.Description,
                 Created_date = DateTime.Now,
-                SeverityEnum = message.SeverityEnum ?? SeverityEnum.low,
+                SeverityEnum = newTicket.SeverityEnum ?? SeverityEnum.low,
                 StatusEnum = StatusEnum.ussigned,
-                Costumer_id = message.Costumer_id,
+                Costumer_id = newTicket.Costumer_id,
             };
 
             ctx.Ticket.Add(ticket);
