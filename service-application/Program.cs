@@ -17,6 +17,8 @@ using service_repository.Repositories.RepoMessage;
 using service_logic.LogicMessage;
 using service_repository.Repositories.RepoTicket;
 using service_logic.LogicTicket;
+using Microsoft.AspNetCore.Identity;
+using service_data.Models.EntityModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,10 @@ var connectionString = builder.Configuration.GetConnectionString("service.applic
 builder.Services.AddDbContext<ServiceAppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
            .UseLazyLoadingProxies());
+
+builder.Services.AddIdentity<User, IdentityRole>()
+        .AddEntityFrameworkStores<ServiceAppDbContext>()
+        .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
