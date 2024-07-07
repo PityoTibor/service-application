@@ -23,13 +23,12 @@ namespace service_repository.Repositories.RepoCostumer
         }
         public async Task<Costumer> CreateAsync(CreateCostumerEntityDto costumerUser)
         {
-            User user = new User()
+            CreateUserEntityDto user = new CreateUserEntityDto()
             {
                 Email = costumerUser.Email,
                 Password = costumerUser.Password,
                 Role = costumerUser.Role,
                 Username = costumerUser.Username,
-                User_id = new Guid()
             };
 
             var createdUser = await userRepository.CreateAsync(user);
@@ -131,7 +130,7 @@ namespace service_repository.Repositories.RepoCostumer
                 var costumer = await GetOneAsync(Id);
 
                 //itt ki kell szedni 
-                User user = new User()
+                CreateUserEntityDto user = new CreateUserEntityDto()
                 {
                     Username = costumerUser.Username,
                     Email = costumerUser.Email,

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using service_application.Controller.Helper;
+using service_application.Services;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
@@ -15,6 +16,7 @@ namespace service_application.Controller
     public class AdminController : ControllerBase
     {
         private readonly IAdminLogic adminLogic;
+        private readonly PasswordService passwordService;
         public AdminController(IAdminLogic adminLogic)
         {
             this.adminLogic = adminLogic;
@@ -25,6 +27,7 @@ namespace service_application.Controller
         {
             try
             {
+                admin.Password = passwordService.HashPassword(admin.Password);
                 var result = await adminLogic.CreateAsync(admin);
                 return Ok(result);
             }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using service_application.Controller.Helper;
+using service_application.Services;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
+using service_data.Models.EntityModels;
 using service_logic;
 using service_logic.LogicAdmin;
 using service_logic.LogicHandyman;
@@ -15,6 +17,8 @@ namespace service_application.Controller
     public class HandymanController : ControllerBase
     {
         private readonly IHandymanLogic handymanLogic;
+        private readonly PasswordService passwordService;
+
         public HandymanController(IHandymanLogic handymanLogic)
         {
             this.handymanLogic = handymanLogic;
@@ -25,6 +29,7 @@ namespace service_application.Controller
         {
             try
             {
+                handyman.Password = passwordService.HashPassword(handyman.Password);
                 var result = await handymanLogic.CreateAsync(handyman);
                 return Ok(result);
             }

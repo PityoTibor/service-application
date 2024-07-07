@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using service_repository.Repositories.RepoUsers;
+using service_data.Models.DTOs.RequestDto;
 
 namespace service_logic.LogicUsers
 {
@@ -15,7 +16,7 @@ namespace service_logic.LogicUsers
         {
             this.userRepository = userRepository;
         }
-        public async Task<User> CreateAsync(User user)
+        public async Task<User> CreateAsync(CreateUserEntityDto user)
         {
             return await userRepository.CreateAsync(user);
         }
@@ -35,7 +36,7 @@ namespace service_logic.LogicUsers
             return await userRepository.GetOneAsync(Id);
         }
 
-        public async Task<User> UpdateAsync(Guid Id, User user)
+        public async Task<User> UpdateAsync(Guid Id, CreateUserEntityDto user)
         {
             return await userRepository.UpdateAsync(Id, user);
         }

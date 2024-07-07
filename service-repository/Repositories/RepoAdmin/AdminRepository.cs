@@ -27,13 +27,12 @@ namespace service_repository.Repositories.RepoAdmin
         public async Task<Admin> CreateAsync(CreateAdminEntityDto adminUser)
         {
             //kell majd egy mapper a userre, vagy egy factory
-            User user = new User()
+            CreateUserEntityDto user = new CreateUserEntityDto()
             {
                 Email = adminUser.Email,
                 Password = adminUser.Password,
                 Role = adminUser.Role,
                 Username = adminUser.Username,
-                User_id = new Guid()
             };
 
             var createdUser = await userRepository.CreateAsync(user);
@@ -135,7 +134,7 @@ namespace service_repository.Repositories.RepoAdmin
                 var admin = await GetOneAsync(Id);
 
                 //itt ki kell szedni 
-                User user = new User()
+                CreateUserEntityDto user = new CreateUserEntityDto()
                 { 
                     Username = adminUser.Username,
                     Email = adminUser.Email,

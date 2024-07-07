@@ -1,4 +1,5 @@
-﻿using service_data.Models.EntityModels;
+﻿using service_data.Models.DTOs.RequestDto;
+using service_data.Models.EntityModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace service_logic
 {
     public interface IUserLogic
     {
-        Task<User> CreateAsync(User user);
+        Task<User> CreateAsync(CreateUserEntityDto user);
         Task<User> GetOneAsync(Guid Id);
         Task<IQueryable<User>> GetAllAsync();
-        Task<User> UpdateAsync(Guid Id, User user);
+        Task<User> UpdateAsync(Guid Id, CreateUserEntityDto user);
         Task<bool> DeleteAsync(Guid Id);
     }
 }

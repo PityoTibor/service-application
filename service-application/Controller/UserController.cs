@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
 using service_application.Controller.Helper;
+using service_application.Services;
+using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
 using service_logic;
@@ -18,16 +20,19 @@ namespace service_application.Controller
     public class UserController : ControllerBase
     {
         private readonly IUserLogic userLogic;
-        public UserController(IUserLogic userLogic)
+        private readonly PasswordService passwordService;
+        public UserController(IUserLogic userLogic, PasswordService passwordService)
         {
              this.userLogic = userLogic;
+            this.passwordService = passwordService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] User user )
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserEntityDto user )
         {
             try
             {
+                user.Password = passwordService.HashPassword(user.Password);
                 var result = await userLogic.CreateAsync(user);
                 return Ok(result);
             }
@@ -98,11 +103,11 @@ namespace service_application.Controller
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdateUser(User user)
+        public async Task<IActionResult> UpdateUser(Guid id, CreateUserEntityDto user)
         {
             try
             {
-                await userLogic.UpdateAsync(user.User_id, user);
+                await userLogic.UpdateAsync(id, user);
                 return Ok();
             }
             catch (Exception)

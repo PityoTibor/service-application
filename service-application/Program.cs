@@ -19,6 +19,7 @@ using service_repository.Repositories.RepoTicket;
 using service_logic.LogicTicket;
 using Microsoft.AspNetCore.Identity;
 using service_data.Models.EntityModels;
+using service_application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,9 +35,7 @@ builder.Services.AddDbContext<ServiceAppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
            .UseLazyLoadingProxies());
 
-builder.Services.AddIdentity<User, IdentityRole>()
-        .AddEntityFrameworkStores<ServiceAppDbContext>()
-        .AddDefaultTokenProviders();
+builder.Services.AddSingleton<PasswordService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();

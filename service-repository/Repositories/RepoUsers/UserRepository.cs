@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using service_data.Models.DTOs.RequestDto;
 
 namespace service_repository.Repositories.RepoUsers
 {
@@ -19,7 +20,7 @@ namespace service_repository.Repositories.RepoUsers
             this.ctx = ctx;
         }
 
-        public async Task<User> CreateAsync(User user)
+        public async Task<User> CreateAsync(CreateUserEntityDto user)
         {
             if (user != null)
             {
@@ -27,9 +28,18 @@ namespace service_repository.Repositories.RepoUsers
                 {
                     try
                     {
-                        await ctx.User.AddAsync(user);
+                        User newUser = new User()
+                        {
+                            User_id = Guid.NewGuid(),
+                            Username = user.Username,
+                            Email = user.Email,
+                            Password = user.Password,
+                            Role = user.Role,
+                        };
+
+                        await ctx.User.AddAsync(newUser);
                         ctx.SaveChanges();
-                        return user;
+                        return newUser;
                     }
                     catch (Exception ex)
                     {
@@ -93,7 +103,7 @@ namespace service_repository.Repositories.RepoUsers
             return res;
         }
 
-        public async Task<User> UpdateAsync(Guid Id, User user)
+        public async Task<User> UpdateAsync(Guid Id, CreateUserEntityDto user)
         {
             if (IsValidUser(user))
             {
@@ -126,15 +136,14 @@ namespace service_repository.Repositories.RepoUsers
             }
         }
 
-        private bool IsValidUser(Object admin)
+        private bool IsValidUser(Object user)
         {
-            if (admin is User)
+            if (user is CreateUserEntityDto)
             {
-                return (admin as User).User_id != null && (admin as User).User_id.GetType() == typeof(Guid) &&
-                (admin as User).Username != null && (admin as User).Username.GetType() == typeof(string) &&
-                (admin as User).Password != null && (admin as User).Password.GetType() == typeof(string) &&
-                (admin as User).Email != null && (admin as User).Email.GetType() == typeof(string) &&
-                (admin as User).Role != null && (admin as User).Role.GetType() == typeof(RoleEnum);
+                return (user as CreateUserEntityDto).Username != null && (user as CreateUserEntityDto).Username.GetType() == typeof(string) &&
+                (user as CreateUserEntityDto).Password != null && (user as CreateUserEntityDto).Password.GetType() == typeof(string) &&
+                (user as CreateUserEntityDto).Email != null && (user as CreateUserEntityDto).Email.GetType() == typeof(string) &&
+                (user as CreateUserEntityDto).Role != null && (user as CreateUserEntityDto).Role.GetType() == typeof(RoleEnum);
             }
             else
             {

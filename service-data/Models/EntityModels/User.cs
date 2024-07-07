@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,7 +13,7 @@ namespace service_data.Models.EntityModels
     {
         admin = 0, handyman = 1, costumer = 2
     }
-    public class User : IdentityUser
+    public class User
     {
         [Key]
         public Guid User_id { get; set; }

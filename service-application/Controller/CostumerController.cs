@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using service_application.Controller.Helper;
+using service_application.Services;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
+using service_data.Models.EntityModels;
 using service_logic.LogicCostumer;
 using service_logic.LogicHandyman;
 
@@ -12,6 +14,7 @@ namespace service_application.Controller
     public class CostumerController : ControllerBase
     {
         private readonly ICostumerLogic costumerLogic;
+        private readonly PasswordService passwordService;
         public CostumerController(ICostumerLogic costumerLogic)
         {
             this.costumerLogic = costumerLogic;
@@ -22,6 +25,7 @@ namespace service_application.Controller
         {
             try
             {
+                costumer.Password = passwordService.HashPassword(costumer.Password);
                 var result = await costumerLogic.CreateAsync(costumer);
                 return Ok(result);
             }
