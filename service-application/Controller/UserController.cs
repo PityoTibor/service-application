@@ -69,41 +69,31 @@ namespace service_application.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUser(Guid id)
+        public async Task<IActionResult> GetAllUser()
         {
             try
             {
                 HeaderParameters parameters = new HeaderParameters();
-                
-                if (id == Guid.Empty)
+                UserResponseDto response;
+
+                var result = await userLogic.GetAllAsync();
+
+                object[] tm = new object[result.Count()];
+                int i = 0;
+                foreach (var item in result)
                 {
-
-                    UserResponseDto response;
-
-                    var result = await userLogic.GetAllAsync();
-
-                    object[] tm = new object[result.Count()];
-                    int i = 0;
-                    foreach (var item in result)
+                    response = new UserResponseDto
                     {
-                        response = new UserResponseDto
-                        {
-                            Id = item.User_id.ToString(),
-                            Username = item.Username,
-                            Email = item.Email,
-                            Role = item.Role.ToString(),
-                        };
-                        tm[i++] = response;
-                    }
+                        Id = item.User_id.ToString(),
+                        Username = item.Username,
+                        Email = item.Email,
+                        Role = item.Role.ToString(),
+                    };
+                    tm[i++] = response;
+                }
 
-                    parameters.GetResponseWithHeaders(Response, result.Count());
-                    return Ok(tm);
-                }
-                else
-                {
-                    var result = await userLogic.GetOneAsync(id);
-                    return Ok(result);
-                }
+                parameters.GetResponseWithHeaders(Response, result.Count());
+                return Ok(tm);
             }
             catch (Exception ex)
             {

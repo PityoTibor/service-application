@@ -18,7 +18,7 @@ namespace service_data.Models.Mappers
                 Id = ticket.Ticket_id,
                 Title = ticket.Title,
                 Description = ticket.Description,
-                Created_date = DateTime.Now,
+                Created_date = ticket.Created_date,
                 SeverityEnum = ticket.SeverityEnum.ToString(),
                 StatusEnum = ticket.StatusEnum.ToString(),
                 Costumer = costumerMapper.ToDto(ticket.Costumer),
