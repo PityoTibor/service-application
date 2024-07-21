@@ -17,15 +17,10 @@ namespace service_data.Models.DTOs.ResponseDto
         public DateTime? Created_date { get; set; }
         public string? SeverityEnum { get; set; }
         public string? StatusEnum { get; set; }
-
         public Guid? Handyman_id { get; set; }
-
         public Handyman? Handyman { get; set; }
-
         public Guid? Costumer_id { get; set; }
-
         public CostumerResponseDto? Costumer { get; set; }
-
         public ICollection<Message>? Messages { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using service_application.Controller.Helper;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
+using service_data.Models.Mappers;
 using service_logic.LogicAdmin;
 using service_logic.LogicHandyman;
 using service_logic.LogicMessage;
@@ -44,18 +45,8 @@ namespace service_application.Controller
                 {
                     MessageResponseDto response;
                     var result = await messageLogic.GetOneAsync(id);
-                    response = new MessageResponseDto
-                    {
-                        Id = result.Message_id,
-                        Content = result.Content,
-                        Created_date = result.Created_date,
-                        Handyman = result.Handyman,
-                        Handyman_id = result.Handyman_id,
-                        Costumer = result.Costumer,
-                        Costumer_id = result.Costumer_id,
-                        Ticket = result.Ticket,
-                        Ticket_id = result.Ticket_id,
-                    };
+                    MessageMapper messageMapper = new MessageMapper();
+                    response = messageMapper.ToDto(result);
 
                     //parameters.GetResponseWithHeaders(Response, result.Count());
                     return Ok(response);
@@ -77,22 +68,12 @@ namespace service_application.Controller
                 MessageResponseDto response;
                 var result = await messageLogic.GetAllAsync();
 
+                MessageMapper messageMapper = new MessageMapper();
                 object[] tm = new object[result.Count()];
                 int i = 0;
                 foreach (var item in result)
                 {
-                    response = new MessageResponseDto
-                    {
-                        Id = item.Message_id,
-                        Content = item.Content,
-                        Created_date = item.Created_date,
-                        Handyman = item.Handyman,
-                        Handyman_id = item.Handyman_id,
-                        Costumer = item.Costumer,
-                        Costumer_id = item.Costumer_id,
-                        Ticket = item.Ticket,
-                        Ticket_id = item.Ticket_id,
-                    };
+                    response = messageMapper.ToDto(item);
                     tm[i++] = response;
                 }
                 parameters.GetResponseWithHeaders(Response, result.Count());

@@ -12,6 +12,6 @@ namespace service_data.Models.DTOs.ResponseDto
     {
         public Guid Id { get; set; }
         public Guid User_id { get; set; }
-        public User User { get; set; }
+        public UserResponseDto User { get; set; }
     }
 }

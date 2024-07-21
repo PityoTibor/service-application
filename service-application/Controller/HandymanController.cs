@@ -5,6 +5,7 @@ using service_application.Services;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
+using service_data.Models.Mappers;
 using service_logic;
 using service_logic.LogicAdmin;
 using service_logic.LogicHandyman;
@@ -48,17 +49,10 @@ namespace service_application.Controller
 
                 if (id != Guid.Empty)
                 {
-
-                    HandymanResponseDto response;
+                    HandymanMapper handymanMapper = new HandymanMapper();
                     var result = await handymanLogic.GetOneAsync(id);
-                    response = new HandymanResponseDto
-                    {
-                        Id = result.Handyman_id,
-                        User_id = result.User_id,
-                        User = result.User
-                    };
-
-                    //parameters.GetResponseWithHeaders(Response, result.Count());
+                    HandymanResponseDto response = handymanMapper.ToDto(result);
+                    
                     return Ok(response);
                 }
                 return BadRequest();
@@ -78,16 +72,12 @@ namespace service_application.Controller
                 HandymanResponseDto response;
                 var result = await handymanLogic.GetAllAsync();
 
+                HandymanMapper handymanMapper = new HandymanMapper();   
                 object[] tm = new object[result.Count()];
                 int i = 0;
                 foreach (var item in result)
                 {
-                    response = new HandymanResponseDto
-                    {
-                        Id = item.Handyman_id,
-                        User_id = item.User_id,
-                        User = item.User
-                    };
+                    response = handymanMapper.ToDto(item);
                     tm[i++] = response;
                 }
 
@@ -118,7 +108,7 @@ namespace service_application.Controller
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdateUser(Guid id, CreateHandymanEntityDto adminEntityDto)
+        public async Task<IActionResult> UpdateHandyman(Guid id, CreateHandymanEntityDto adminEntityDto)
         {
             try
             {
