@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper.Internal.Mappers;
+using Microsoft.AspNetCore.Mvc;
 using service_application.Controller.Helper;
 using service_application.Services;
 using service_data.Models.DTOs.RequestDto;
@@ -6,6 +7,7 @@ using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
 using service_logic.LogicCostumer;
 using service_logic.LogicHandyman;
+using service_data.Models.Mappers;
 
 namespace service_application.Controller
 {
@@ -35,39 +37,51 @@ namespace service_application.Controller
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetOneHandyman(Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneCustomer(Guid id)
         {
             try
             {
                 HeaderParameters parameters = new HeaderParameters();
 
-                if (id == Guid.Empty)
-                {
-                    CostumerResponseDto response;
-                    var result = await costumerLogic.GetAllAsync();
-
-                    object[] tm = new object[result.Count()];
-                    int i = 0;
-                    foreach (var item in result)
-                    {
-                        response = new CostumerResponseDto
-                        {
-                            Costumer_id = item.Costumer_id,
-                            User_id = item.User_id,
-                            User = item.User
-                        };
-                        tm[i++] = response;
-                    }
-
-                    parameters.GetResponseWithHeaders(Response, result.Count());
-                    return Ok(tm);
-                }
-                else
+                if (id != Guid.Empty)
                 {
                     var result = await costumerLogic.GetOneAsync(id);
-                    return Ok(result);
+                    CostumerMapper mapper = new();
+                    CostumerResponseDto response = mapper.ToDto(result);
+
+
+                    //parameters.GetResponseWithHeaders(Response, result.Count());
+                    return Ok(response);
                 }
+                return BadRequest(500);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllCustomer()
+        {
+            try
+            {
+                HeaderParameters parameters = new HeaderParameters();               
+                CostumerResponseDto response;
+                var result = await costumerLogic.GetAllAsync();
+
+                CostumerMapper costumerMapper = new();
+                object[] tm = new object[result.Count()];
+                int i = 0;
+                foreach (var item in result)
+                {
+                    response = costumerMapper.ToDto(item);
+                    tm[i++] = response;
+                }
+
+                parameters.GetResponseWithHeaders(Response, result.Count());
+                return Ok(tm);
             }
             catch (Exception ex)
             {

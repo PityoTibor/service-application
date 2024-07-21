@@ -10,7 +10,7 @@ namespace service_data.Models.DTOs.ResponseDto
 {
     public class MessageResponseDto
     {
-        public Guid? Message_id { get; set; }
+        public Guid? Id { get; set; }
         public string? Content { get; set; }
         public DateTime? Created_date { get; set; }
         public Guid? Handyman_id { get; set; }

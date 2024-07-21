@@ -33,46 +33,70 @@ namespace service_application.Controller
             }
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetOneMessage(Guid id)
         {
             try
             {
                 HeaderParameters parameters = new HeaderParameters();
 
-                if (id == Guid.Empty)
+                if (id != Guid.Empty)
                 {
-
                     MessageResponseDto response;
-                    var result = await messageLogic.GetAllAsync();
-
-                    object[] tm = new object[result.Count()];
-                    int i = 0;
-                    foreach (var item in result)
-                    {
-                        response = new MessageResponseDto
-                        {
-                            Message_id = item.Message_id,
-                            Content = item.Content,
-                            Created_date = item.Created_date,
-                            Handyman = item.Handyman,
-                            Handyman_id = item.Handyman_id,
-                            Costumer = item.Costumer,
-                            Costumer_id = item.Costumer_id,
-                            Ticket = item.Ticket,
-                            Ticket_id = item.Ticket_id,
-                        };
-                        tm[i++] = response;
-                    }
-
-                    parameters.GetResponseWithHeaders(Response, result.Count());
-                    return Ok(tm);
-                }
-                else
-                {
                     var result = await messageLogic.GetOneAsync(id);
-                    return Ok(result);
+                    response = new MessageResponseDto
+                    {
+                        Id = result.Message_id,
+                        Content = result.Content,
+                        Created_date = result.Created_date,
+                        Handyman = result.Handyman,
+                        Handyman_id = result.Handyman_id,
+                        Costumer = result.Costumer,
+                        Costumer_id = result.Costumer_id,
+                        Ticket = result.Ticket,
+                        Ticket_id = result.Ticket_id,
+                    };
+
+                    //parameters.GetResponseWithHeaders(Response, result.Count());
+                    return Ok(response);
                 }
+                return BadRequest(500);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllMessage()
+        {
+            try
+            {
+                HeaderParameters parameters = new HeaderParameters();
+                MessageResponseDto response;
+                var result = await messageLogic.GetAllAsync();
+
+                object[] tm = new object[result.Count()];
+                int i = 0;
+                foreach (var item in result)
+                {
+                    response = new MessageResponseDto
+                    {
+                        Id = item.Message_id,
+                        Content = item.Content,
+                        Created_date = item.Created_date,
+                        Handyman = item.Handyman,
+                        Handyman_id = item.Handyman_id,
+                        Costumer = item.Costumer,
+                        Costumer_id = item.Costumer_id,
+                        Ticket = item.Ticket,
+                        Ticket_id = item.Ticket_id,
+                    };
+                    tm[i++] = response;
+                }
+                parameters.GetResponseWithHeaders(Response, result.Count());
+                return Ok(tm);
             }
             catch (Exception ex)
             {

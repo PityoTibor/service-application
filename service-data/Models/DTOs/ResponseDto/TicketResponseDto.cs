@@ -1,4 +1,5 @@
 ﻿using service_data.Models.EntityModels;
+using service_data.Models.DTOs.ResponseDto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,12 +11,12 @@ namespace service_data.Models.DTOs.ResponseDto
 {
     public class TicketResponseDto
     {
-        public Guid Ticket_id { get; set; }
+        public Guid Id { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
         public DateTime? Created_date { get; set; }
-        public SeverityEnum? SeverityEnum { get; set; }
-        public StatusEnum? StatusEnum { get; set; }
+        public string? SeverityEnum { get; set; }
+        public string? StatusEnum { get; set; }
 
         public Guid? Handyman_id { get; set; }
 
@@ -23,7 +24,7 @@ namespace service_data.Models.DTOs.ResponseDto
 
         public Guid? Costumer_id { get; set; }
 
-        public Costumer? Costumer { get; set; }
+        public CostumerResponseDto? Costumer { get; set; }
 
         public ICollection<Message>? Messages { get; set; }
     }

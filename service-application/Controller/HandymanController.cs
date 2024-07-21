@@ -39,40 +39,60 @@ namespace service_application.Controller
             }
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetOneHandyman(Guid id)
         {
             try
             {
                 HeaderParameters parameters = new HeaderParameters();
 
-                if (id == Guid.Empty)
+                if (id != Guid.Empty)
                 {
 
                     HandymanResponseDto response;
-                    var result = await handymanLogic.GetAllAsync();
-
-                    object[] tm = new object[result.Count()];
-                    int i = 0;
-                    foreach (var item in result)
-                    {
-                        response = new HandymanResponseDto
-                        {
-                            Handyman_id = item.Handyman_id,
-                            User_id = item.User_id,
-                            User = item.User
-                        };
-                        tm[i++] = response;
-                    }
-
-                    parameters.GetResponseWithHeaders(Response, result.Count());
-                    return Ok(tm);
-                }
-                else
-                {
                     var result = await handymanLogic.GetOneAsync(id);
-                    return Ok(result);
+                    response = new HandymanResponseDto
+                    {
+                        Id = result.Handyman_id,
+                        User_id = result.User_id,
+                        User = result.User
+                    };
+
+                    //parameters.GetResponseWithHeaders(Response, result.Count());
+                    return Ok(response);
                 }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllHandyman()
+        {
+            try
+            {
+                HeaderParameters parameters = new HeaderParameters();
+                HandymanResponseDto response;
+                var result = await handymanLogic.GetAllAsync();
+
+                object[] tm = new object[result.Count()];
+                int i = 0;
+                foreach (var item in result)
+                {
+                    response = new HandymanResponseDto
+                    {
+                        Id = item.Handyman_id,
+                        User_id = item.User_id,
+                        User = item.User
+                    };
+                    tm[i++] = response;
+                }
+
+                parameters.GetResponseWithHeaders(Response, result.Count());
+                return Ok(tm);
             }
             catch (Exception ex)
             {

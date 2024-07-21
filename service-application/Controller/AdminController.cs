@@ -53,43 +53,68 @@ namespace service_application.Controller
             }
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetOneAdmin(Guid id)
         {
             try
             {
                 HeaderParameters parameters = new HeaderParameters();
-                if (id == Guid.Empty)
+                if (id != Guid.Empty)
                 {
                     AdminResponseDto response;
 
-                    var result = await adminLogic.GetAllAsync();
-                    foreach (var item in result)
+                    var result = await adminLogic.GetOneAsync(id);
+                    /*foreach (var item in result)
                     {
                         await Console.Out.WriteLineAsync(item.ToString());
                     }
-
-                    object[] tm = new object[result.Count()];
-                    int i = 0;  
-                    foreach (var item in result)
+                    */
+                    response = new AdminResponseDto
                     {
-                        response = new AdminResponseDto
-                        {
-                            Id = item.Admin_id,
-                            //kellene majd wrapper
-                            //UserModelDto = item.User;
-                        };
-                        tm[i++] = response;
-                    }
+                        Id = result.Admin_id,
+                        //kellene majd wrapper
+                        //UserModelDto = item.User;
+                    };
 
-                    parameters.GetResponseWithHeaders(Response, result.Count());
-                    return Ok(tm);
+                    return Ok(response);
                 }
-                else
+                return BadRequest(500);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllAdmin()
+        {
+            try
+            {
+                HeaderParameters parameters = new HeaderParameters();
+                AdminResponseDto response;
+
+                var result = await adminLogic.GetAllAsync();
+                /*foreach (var item in result)
                 {
-                    var result = await adminLogic.GetOneAsync(id);
-                    return Ok();
+                    await Console.Out.WriteLineAsync(item.ToString());
                 }
+                */
+                object[] tm = new object[result.Count()];
+                int i = 0;  
+                foreach (var item in result)
+                {
+                    response = new AdminResponseDto
+                    {
+                        Id = item.Admin_id,
+                        //kellene majd wrapper
+                        //UserModelDto = item.User;
+                    };
+                    tm[i++] = response;
+                }
+
+                parameters.GetResponseWithHeaders(Response, result.Count());
+                return Ok(tm);
 
             }
             catch (Exception ex)

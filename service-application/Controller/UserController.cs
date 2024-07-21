@@ -9,7 +9,9 @@ using service_application.Services;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
+using service_data.Models.Mappers;
 using service_logic;
+using service_logic.LogicTicket;
 using service_repository.Exceptions;
 using System.Net.Http.Headers;
 
@@ -42,8 +44,32 @@ namespace service_application.Controller
             }
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOne(Guid id)
+        {
+            try
+            {
+                UserResponseDto response;
+                var result = await userLogic.GetOneAsync(id);
+                UserMapper mapper = new();
+                UserResponseDto userResponse = mapper.ToDto(result);
+                response = new UserResponseDto
+                {
+                    Id = result.User_id.ToString(),
+                    Username = result.Username,
+                    Email = result.Email,
+                    Role = result.Role.ToString(),
+                };
+                return Ok(userResponse);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpGet]
-        public async Task<IActionResult> GetOneUser(Guid id)
+        public async Task<IActionResult> GetAllUser(Guid id)
         {
             try
             {
