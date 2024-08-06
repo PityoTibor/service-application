@@ -16,11 +16,12 @@ namespace service_application.Controller
     public class TicketController : ControllerBase
     {
         private readonly ITicketLogic ticketLogic;
-        public TicketMapper TicketMapper = new();
+        private readonly ITicketMapper ticketMapper;
 
-        public TicketController(ITicketLogic ticketLogic)
+        public TicketController(ITicketLogic ticketLogic, ITicketMapper ticketMapper)
         {
             this.ticketLogic = ticketLogic;
+            this.ticketMapper = ticketMapper;
         }
         [HttpPost]
         public async Task<IActionResult> CreateTicket([FromBody] CreateTicketEntityDto ticket)
@@ -42,7 +43,7 @@ namespace service_application.Controller
             try
             {
                 var result = await ticketLogic.GetOneAsync(id);
-                TicketResponseDto response = TicketMapper.ToDto(result);
+                var response = ticketMapper.ToDto(result);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -63,7 +64,7 @@ namespace service_application.Controller
                 int i = 0;
                 foreach (var item in result)
                 {
-                    response = TicketMapper.ToDto(item);
+                    response = ticketMapper.ToDto(item);
                     tm[i++] = response;
                 }
 
@@ -78,7 +79,7 @@ namespace service_application.Controller
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public async Task<IActionResult> DeleteCostumer([FromRoute] Guid Id)
+        public async Task<IActionResult> DeleteTicket([FromRoute] Guid Id)
         {
             try
             {
@@ -93,13 +94,14 @@ namespace service_application.Controller
             }
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> UpdateMessage(Guid id, CreateTicketEntityDto? ticketEntityDto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTicket(Guid id, CreateTicketEntityDto? ticketEntityDto)
         {
             try
             {
-                await ticketLogic.UpdateAsync(id, ticketEntityDto);
-                return Ok();
+                var result = await ticketLogic.UpdateAsync(id, ticketEntityDto);
+                var ticketDto = ticketMapper.ToDto(result);
+                return Ok(ticketDto);
             }
             catch (Exception)
             {

@@ -5,6 +5,7 @@ using service_application.Services;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
+using service_data.Models.Mappers;
 using service_logic;
 using service_logic.LogicAdmin;
 using service_logic.LogicUsers;
@@ -16,10 +17,13 @@ namespace service_application.Controller
     public class AdminController : ControllerBase
     {
         private readonly IAdminLogic adminLogic;
-        private readonly PasswordService passwordService;
-        public AdminController(IAdminLogic adminLogic)
+        private readonly IPasswordService passwordService;
+        private readonly IAdminMapper adminMapper;
+        public AdminController(IAdminLogic adminLogic, IPasswordService passwordService, IAdminMapper adminMapper)
         {
             this.adminLogic = adminLogic;
+            this.adminMapper = adminMapper;
+            this.passwordService = passwordService;
         }
 
         [HttpPost]
@@ -124,13 +128,14 @@ namespace service_application.Controller
             }
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> UpdateUser(Guid id, CreateAdminEntityDto adminEntityDto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAdmin(Guid id, CreateAdminEntityDto adminEntityDto)
         {
             try
             {
-                await adminLogic.UpdateAsync(id, adminEntityDto);
-                return Ok();
+                var result = await adminLogic.UpdateAsync(id, adminEntityDto);
+                var adminDto = adminMapper.ToDto(result);
+                return Ok(adminDto);
             }
             catch (Exception)
             {

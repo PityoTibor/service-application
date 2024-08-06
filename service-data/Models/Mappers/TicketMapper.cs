@@ -8,7 +8,7 @@ using service_data.Models.EntityModels;
 
 namespace service_data.Models.Mappers
 {
-    public class TicketMapper
+    public class TicketMapper : ITicketMapper
     {
         public TicketResponseDto ToDto(Ticket ticket)
         {
@@ -23,6 +23,7 @@ namespace service_data.Models.Mappers
                 StatusEnum = ticket.StatusEnum.ToString(),
                 Costumer = costumerMapper.ToDto(ticket.Costumer),
                 Messages = ticket.Messages,
+                Costumer_id = ticket.Costumer_id,
             };
         }
     }

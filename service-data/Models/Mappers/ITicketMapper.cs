@@ -8,14 +8,8 @@ using System.Threading.Tasks;
 
 namespace service_data.Models.Mappers
 {
-    public class AdminMapper : IAdminMapper
+    public interface ITicketMapper
     {
-        public AdminResponseDto ToDto(Admin admin)
-        {
-            return new AdminResponseDto
-            {
-                Id = admin.Admin_id
-            };
-        }
+        public TicketResponseDto ToDto(Ticket ticket);
     }
 }

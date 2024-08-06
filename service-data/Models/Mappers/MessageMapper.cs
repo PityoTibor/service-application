@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace service_data.Models.Mappers
 {
-    public class MessageMapper
+    public class MessageMapper : IMessageMapper
     {
         public MessageResponseDto ToDto(Message ticket)
         {

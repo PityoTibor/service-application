@@ -18,11 +18,14 @@ namespace service_application.Controller
     public class HandymanController : ControllerBase
     {
         private readonly IHandymanLogic handymanLogic;
-        private readonly PasswordService passwordService;
+        private readonly IPasswordService passwordService;
+        private readonly IHandymanMapper handymanMapper;
 
-        public HandymanController(IHandymanLogic handymanLogic)
+        public HandymanController(IHandymanLogic handymanLogic, IPasswordService passwordService, IHandymanMapper handymanMapper)
         {
             this.handymanLogic = handymanLogic;
+            this.passwordService = passwordService;
+            this.handymanMapper = handymanMapper;   
         }
 
         [HttpPost]
@@ -107,13 +110,14 @@ namespace service_application.Controller
             }
         }
 
-        [HttpPatch]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHandyman(Guid id, CreateHandymanEntityDto adminEntityDto)
         {
             try
             {
-                await handymanLogic.UpdateAsync(id, adminEntityDto);
-                return Ok();
+                var result = await handymanLogic.UpdateAsync(id, adminEntityDto);
+                var handymanDto = handymanMapper.ToDto(result);
+                return Ok(handymanDto);
             }
             catch (Exception)
             {

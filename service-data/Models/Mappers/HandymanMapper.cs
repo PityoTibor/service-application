@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace service_data.Models.Mappers
 {
-    public class HandymanMapper
+    public class HandymanMapper : IHandymanMapper
     {
         public HandymanResponseDto ToDto(Handyman handyman)
         {

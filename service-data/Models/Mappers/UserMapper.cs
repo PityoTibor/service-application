@@ -8,7 +8,7 @@ using service_data.Models.DTOs.ResponseDto;
 
 namespace service_data.Models.Mappers
 {
-    public class UserMapper
+    public class UserMapper : IUserMapper
     {
         public UserResponseDto ToDto(User user)
         {
