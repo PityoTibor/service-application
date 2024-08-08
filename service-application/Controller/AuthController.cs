@@ -14,10 +14,12 @@ namespace service_application.Controller
     {
         private readonly IAuthService authService;
         private readonly IUserLogic userLogic;
-        public AuthController(IAuthService authService, IUserLogic userLogic)
+        private readonly IPasswordService passwordService;
+        public AuthController(IAuthService authService, IUserLogic userLogic, IPasswordService passwordService)
         {
             this.authService = authService;
             this.userLogic = userLogic;
+            this.passwordService = passwordService;
         }
         [HttpPost("login")]
         public async Task<ActionResult> Authenticate([FromBody] LoginRequest login)
@@ -30,7 +32,7 @@ namespace service_application.Controller
                 Password = login.Password
             };
 
-            bool isUsernamePasswordValid = false;
+            bool isUsernamePasswordValid = passwordService.VerifyPassword(login.Password,user.Password);
 
             if (login != null)
             {
