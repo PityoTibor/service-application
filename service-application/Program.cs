@@ -21,6 +21,9 @@ using Microsoft.AspNetCore.Identity;
 using service_data.Models.EntityModels;
 using service_application.Services;
 using service_data.Models.Mappers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +40,8 @@ builder.Services.AddDbContext<ServiceAppDbContext>(options =>
            .UseLazyLoadingProxies());
 
 builder.Services.AddSingleton<IPasswordService, PasswordService>();
+builder.Services.AddSingleton<IAuthService, AuthService>();
+
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
@@ -68,6 +73,20 @@ builder.Services.AddSingleton<IUserMapper, UserMapper>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add JWT Authentication Middleware - This code will intercept HTTP request and validate the JWT.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+    opt => {
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+            .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    }
+  );
 
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {

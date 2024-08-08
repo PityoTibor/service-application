@@ -36,6 +36,11 @@ namespace service_logic.LogicUsers
             return await userRepository.GetOneAsync(Id);
         }
 
+        public async Task<User> GetOneByEmailAsync(string email)
+        {
+            return await userRepository.GetOneByEmailAsync(email);
+        }
+
         public async Task<User> UpdateAsync(Guid Id, CreateUserEntityDto user)
         {
             return await userRepository.UpdateAsync(Id, user);

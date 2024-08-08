@@ -33,6 +33,7 @@ namespace service_repository.Repositories.RepoTicket
 
             ctx.Ticket.Add(ticket);
             ctx.SaveChanges();
+            await ctx.Entry(ticket).Reference(t => t.Costumer).LoadAsync();
             return ticket;
         }
 
