@@ -1,5 +1,7 @@
 ﻿using asp.net_core_6_jwt_authentication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using service_application.Services;
 using service_logic;
@@ -34,12 +36,11 @@ namespace service_application.Controller
 
             bool isUsernamePasswordValid = passwordService.VerifyPassword(login.Password,user.Password);
 
-            if (login != null)
+            if (login == null)
             {
-                // make await call to the Database to check username and password. here we only checking if password value is admin
-                isUsernamePasswordValid = loginrequest.Password == "admin" ? true : false;
+                throw new Exception();
             }
-            // if credentials are valid
+            
             if (isUsernamePasswordValid)
             {
                 string token = authService.CreateToken(loginrequest.UserName);
@@ -58,6 +59,14 @@ namespace service_application.Controller
                 // if username/password are not valid send unauthorized status code in response               
                 return BadRequest("Username or Password Invalid!");
             }
+        }
+
+        [HttpGet("authTest")]
+        [Authorize]
+        public Task<IActionResult> AuthTest()
+        {
+            ;
+            return null;
         }
     }
 }

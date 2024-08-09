@@ -46,8 +46,15 @@ namespace service_repository.Repositories.RepoHandyman
 
                         await ctx.Handyman.AddAsync(handyman);
                         ctx.SaveChanges();
+
+                        var savedHandyman = ctx.Handyman.
+                            Where(x => x.Handyman_id == handyman.Handyman_id)
+                            .Include(x => x.User)
+                            .Include(t => t.Tickets)
+                            .Include(m => m.Messages)
+                            .FirstOrDefault();
                         //ez igy szar kell majd erre valami
-                        return new Handyman();
+                        return savedHandyman;
                     }
                     catch (Exception ex)
                     {

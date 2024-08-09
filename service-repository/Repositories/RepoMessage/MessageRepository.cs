@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Castle.Components.DictionaryAdapter.Xml;
+using Microsoft.EntityFrameworkCore;
 using service_data.Models;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.EntityModels;
@@ -7,6 +8,7 @@ using service_repository.Repositories.RepoUsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +36,15 @@ namespace service_repository.Repositories.RepoMessage
             
             ctx.Message.Add(message);
             ctx.SaveChanges();
-            return message;
+
+            var savesMessage = ctx.Message
+                        .Include(c => c.Costumer)
+                        .Include(h => h.Handyman)
+                        .Include(t => t.Ticket)
+                        .Where(x => x.Message_id == message.Message_id)
+                        .FirstOrDefault();
+
+            return savesMessage;
         }
 
         public async Task<bool> DeleteAsync(Guid Id)

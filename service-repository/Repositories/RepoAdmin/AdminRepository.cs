@@ -49,7 +49,11 @@ namespace service_repository.Repositories.RepoAdmin
 
                         await ctx.Admin.AddAsync(admin);
                         ctx.SaveChanges();
-                        return admin;
+
+                        var savedAdmin = ctx.Admin.Where(id => id.Admin_id == admin.Admin_id)
+                            .Include(u => u.User)
+                            .FirstOrDefault();
+                        return savedAdmin;
                     }
                     catch (Exception ex)
                     {
@@ -153,6 +157,9 @@ namespace service_repository.Repositories.RepoAdmin
                 {
                     ctx.Admin.Update(existingAdminUser);
                     await ctx.SaveChangesAsync();
+
+                   
+
                     return existingAdminUser;
                 }
                 catch (DbUpdateException ex)
