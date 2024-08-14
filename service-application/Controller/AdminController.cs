@@ -27,14 +27,13 @@ namespace service_application.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAdmin([FromBody] CreateAdminEntityDto admin)
+        public async Task<IActionResult> Create([FromBody] CreateAdminEntityDto admin)
         {
             try
             {
                 admin.Password = passwordService.HashPassword(admin.Password);
                 var result = await adminLogic.CreateAsync(admin);
-
-                return Ok(result);
+                return Ok(adminMapper.ToDto(result));
             }
             catch (Exception ex)
             {
@@ -44,7 +43,7 @@ namespace service_application.Controller
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] Guid Id)
+        public async Task<IActionResult> Delete([FromRoute] Guid Id)
         {
             try
             {
@@ -59,7 +58,7 @@ namespace service_application.Controller
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneAdmin(Guid id)
+        public async Task<IActionResult> GetOne(Guid id)
         {
             try
             {
@@ -92,7 +91,7 @@ namespace service_application.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAdmin()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -130,7 +129,7 @@ namespace service_application.Controller
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAdmin(Guid id, CreateAdminEntityDto adminEntityDto)
+        public async Task<IActionResult> Update(Guid id, CreateAdminEntityDto adminEntityDto)
         {
             try
             {

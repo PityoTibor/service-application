@@ -32,13 +32,13 @@ namespace service_application.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserEntityDto user )
+        public async Task<IActionResult> Create([FromBody] CreateUserEntityDto user )
         {
             try
             {
                 user.Password = passwordService.HashPassword(user.Password);
                 var result = await userLogic.CreateAsync(user);
-                return Ok(result);
+                return Ok(userMapper.ToDto(result));
             }
             catch (Exception ex)
             {
@@ -93,7 +93,7 @@ namespace service_application.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUser()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -127,7 +127,7 @@ namespace service_application.Controller
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public async Task<IActionResult> DeleteUser([FromRoute]Guid Id)
+        public async Task<IActionResult> Delete([FromRoute]Guid Id)
         {
             try
             {
@@ -143,7 +143,7 @@ namespace service_application.Controller
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(Guid id, CreateUserEntityDto user)
+        public async Task<IActionResult> Update(Guid id, CreateUserEntityDto user)
         {
             try
             {

@@ -26,13 +26,13 @@ namespace service_application.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCostumer([FromBody] CreateCostumerEntityDto costumer)
+        public async Task<IActionResult> Create([FromBody] CreateCostumerEntityDto costumer)
         {
             try
             {
                 costumer.Password = passwordService.HashPassword(costumer.Password);
                 var result = await costumerLogic.CreateAsync(costumer);
-                return Ok(result);
+                return Ok(costumerMapper.ToDto(result));
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace service_application.Controller
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneCustomer(Guid id)
+        public async Task<IActionResult> GetOne(Guid id)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace service_application.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCustomer()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -94,7 +94,7 @@ namespace service_application.Controller
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public async Task<IActionResult> DeleteCostumer([FromRoute] Guid Id)
+        public async Task<IActionResult> Delete([FromRoute] Guid Id)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace service_application.Controller
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(Guid id, CreateCostumerEntityDto costumerEntityDto)
+        public async Task<IActionResult> Update(Guid id, CreateCostumerEntityDto costumerEntityDto)
         {
             try
             {

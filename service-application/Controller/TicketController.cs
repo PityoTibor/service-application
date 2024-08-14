@@ -24,12 +24,12 @@ namespace service_application.Controller
             this.ticketMapper = ticketMapper;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateTicket([FromBody] CreateTicketEntityDto ticket)
+        public async Task<IActionResult> Create([FromBody] CreateTicketEntityDto ticket)
         {
             try
             {
                 var result = await ticketLogic.CreateAsync(ticket);
-                return Ok(result);
+                return Ok(ticketMapper.ToDto(result));
             }
             catch (Exception ex)
             {
@@ -79,7 +79,7 @@ namespace service_application.Controller
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public async Task<IActionResult> DeleteTicket([FromRoute] Guid Id)
+        public async Task<IActionResult> Delete([FromRoute] Guid Id)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace service_application.Controller
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTicket(Guid id, CreateTicketEntityDto? ticketEntityDto)
+        public async Task<IActionResult> Update(Guid id, CreateTicketEntityDto? ticketEntityDto)
         {
             try
             {
