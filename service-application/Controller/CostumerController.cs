@@ -16,10 +16,13 @@ namespace service_application.Controller
     public class CostumerController : ControllerBase
     {
         private readonly ICostumerLogic costumerLogic;
-        private readonly PasswordService passwordService;
-        public CostumerController(ICostumerLogic costumerLogic)
+        private readonly IPasswordService passwordService;
+        private readonly ICostumerMapper costumerMapper;
+        public CostumerController(ICostumerLogic costumerLogic, IPasswordService passwordService, ICostumerMapper costumerMapper)
         {
             this.costumerLogic = costumerLogic;
+            this.passwordService = passwordService;
+            this.costumerMapper = costumerMapper;
         }
 
         [HttpPost]
@@ -106,13 +109,14 @@ namespace service_application.Controller
             }
         }
 
-        [HttpPatch]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(Guid id, CreateCostumerEntityDto costumerEntityDto)
         {
             try
             {
-                await costumerLogic.UpdateAsync(id, costumerEntityDto);
-                return Ok();
+                var result = await costumerLogic.UpdateAsync(id, costumerEntityDto);
+                var costumerDto = costumerMapper.ToDto(result);
+                return Ok(costumerDto);
             }
             catch (Exception)
             {

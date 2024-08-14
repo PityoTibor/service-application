@@ -15,9 +15,11 @@ namespace service_application.Controller
     public class MessageController : ControllerBase
     {
         private readonly IMessageLogic messageLogic;
-        public MessageController(IMessageLogic messageLogic)
+        private readonly IMessageMapper messageMapper;
+        public MessageController(IMessageLogic messageLogic, IMessageMapper messageMapper)
         {
             this.messageLogic = messageLogic;
+            this.messageMapper = messageMapper;
         }
 
         [HttpPost]
@@ -101,13 +103,14 @@ namespace service_application.Controller
             }
         }
 
-        [HttpPatch]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMessage(Guid id, CreateMessageEntityDto? messageEntityDto)
         {
             try
             {
-                await messageLogic.UpdateAsync(id, messageEntityDto);
-                return Ok();
+                var result = await messageLogic.UpdateAsync(id, messageEntityDto);
+                var messageDto = messageMapper.ToDto(result);
+                return Ok(messageDto);
             }
             catch (Exception)
             {

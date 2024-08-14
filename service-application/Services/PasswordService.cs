@@ -1,6 +1,6 @@
 ﻿namespace service_application.Services
 {
-    public class PasswordService
+    public class PasswordService : IPasswordService
     {
         public string HashPassword(string password)
         {

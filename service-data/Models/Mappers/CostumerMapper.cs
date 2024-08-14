@@ -8,7 +8,7 @@ using service_data.Models.EntityModels;
 
 namespace service_data.Models.Mappers
 {
-    public class CostumerMapper
+    public class CostumerMapper : ICostumerMapper
     {
         public CostumerResponseDto ToDto(Costumer costumer)
         {

@@ -22,11 +22,13 @@ namespace service_application.Controller
     public class UserController : ControllerBase
     {
         private readonly IUserLogic userLogic;
-        private readonly PasswordService passwordService;
-        public UserController(IUserLogic userLogic, PasswordService passwordService)
+        private readonly IPasswordService passwordService;
+        private readonly IUserMapper userMapper;
+        public UserController(IUserLogic userLogic, IPasswordService passwordService, IUserMapper userMapper)
         {
-             this.userLogic = userLogic;
+            this.userLogic = userLogic;
             this.passwordService = passwordService;
+            this.userMapper = userMapper;
         }
 
         [HttpPost]
@@ -140,13 +142,14 @@ namespace service_application.Controller
             }
         }
 
-        [HttpPatch]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(Guid id, CreateUserEntityDto user)
         {
             try
             {
-                await userLogic.UpdateAsync(id, user);
-                return Ok();
+                var resut = await userLogic.UpdateAsync(id, user);
+                var userDto = userMapper.ToDto(resut);
+                return Ok(userDto);
             }
             catch (Exception)
             {

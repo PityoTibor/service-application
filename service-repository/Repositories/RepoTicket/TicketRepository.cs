@@ -30,9 +30,15 @@ namespace service_repository.Repositories.RepoTicket
                 StatusEnum = StatusEnum.assigned,
                 Costumer_id = newTicket.Costumer_id,
             };
-
+            
             ctx.Ticket.Add(ticket);
             ctx.SaveChanges();
+
+            var savedTicket = ctx.Ticket
+                .Include(h => h.Handyman)
+                .Include(c => c.Costumer)
+                .Where(x => x.Ticket_id == ticket.Ticket_id)
+                .FirstOrDefault();
             return ticket;
         }
 
