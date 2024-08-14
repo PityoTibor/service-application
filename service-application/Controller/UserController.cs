@@ -68,6 +68,28 @@ namespace service_application.Controller
             }
         }
 
+        [HttpGet()]
+        [Route("/GetUserTypes")]
+        public async Task<IActionResult> GetUserTypes()
+        {
+            try
+            {
+                var obj = new { name = "handyman" };
+                var obj2 = new {  name = "admin" };
+                var obj3 = new {  name = "costumer" };
+
+                var array = new object[] { obj, obj2, obj3 };
+
+                return Ok(array);
+            }
+
+                
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllUser()
         {

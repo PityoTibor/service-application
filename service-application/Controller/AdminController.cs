@@ -29,6 +29,7 @@ namespace service_application.Controller
             {
                 admin.Password = passwordService.HashPassword(admin.Password);
                 var result = await adminLogic.CreateAsync(admin);
+
                 return Ok(result);
             }
             catch (Exception ex)

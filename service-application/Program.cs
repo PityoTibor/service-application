@@ -82,7 +82,6 @@ app.UseHttpsRedirection();
 
 app.MapGet("/", () =>
 {
-
     return "Hello service-application";
 });
 app.UseCors("MyPolicy");
