@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using service_data.Models;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.EntityModels;
@@ -45,8 +46,15 @@ namespace service_repository.Repositories.RepoCostumer
 
                         await ctx.Costumer.AddAsync(costumer);
                         ctx.SaveChanges();
+
+                        var savedCostumer = ctx.Costumer
+                            .Where(id => id.Costumer_id == costumer.Costumer_id)
+                            .Include(u => u.User)
+                            .Include(t => t.Tickets)
+                            .Include(m => m.Messages)
+                            .FirstOrDefault();
                         //ez igy szar kell majd erre valami
-                        return new Costumer();
+                        return savedCostumer;
                     }
                     catch (Exception ex)
                     {
@@ -91,7 +99,8 @@ namespace service_repository.Repositories.RepoCostumer
             try
             {
                 var query = ctx.Costumer.AsQueryable();
-                return await Task.FromResult(query);
+
+                return await Task.FromResult(query) ;
             }
             catch (Exception ex)
             {
@@ -99,19 +108,13 @@ namespace service_repository.Repositories.RepoCostumer
             }
         }
 
-        public async Task<Costumer> GetOneAsync(Guid Id)
+        public async Task<Costumer> GetOneAsync(Guid id)
         {
-            var res = await ctx.Costumer.FindAsync(Id);
-            //var res3 = ctx.Handyman.Select(x => x);
-
-            //foreach (var item in res3)
-            //{
-            //    await Console.Out.WriteLineAsync(item.Admin_id.ToString() + item.User_id.ToString());
-            //}
+            var res = await ctx.Costumer.FindAsync(id);
 
             if (res == null)
             {
-                throw new UserNotFoundException(message: $"costumerUser with ID {Id} not found");
+                throw new UserNotFoundException(message: $"costumerUser with ID {id} not found");
             }
             return res;
         }

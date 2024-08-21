@@ -13,6 +13,7 @@ namespace service_repository.Repositories.RepoUsers
         Task<User> CreateAsync(CreateUserEntityDto user);
         Task<User> GetOneAsync(Guid Id);
         Task<IQueryable<User>> GetAllAsync();
+        Task<User> GetOneByEmailAsync(string email);
         Task<User> UpdateAsync(Guid Id, CreateUserEntityDto user);
         Task<bool> DeleteAsync(Guid Id);
     }

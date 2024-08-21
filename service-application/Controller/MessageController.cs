@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using service_application.Controller.Helper;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
+using service_data.Models.Mappers;
 using service_logic.LogicAdmin;
 using service_logic.LogicHandyman;
 using service_logic.LogicMessage;
@@ -14,18 +15,45 @@ namespace service_application.Controller
     public class MessageController : ControllerBase
     {
         private readonly IMessageLogic messageLogic;
-        public MessageController(IMessageLogic messageLogic)
+        private readonly IMessageMapper messageMapper;
+        public MessageController(IMessageLogic messageLogic, IMessageMapper messageMapper)
         {
             this.messageLogic = messageLogic;
+            this.messageMapper = messageMapper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMessage([FromBody] CreateMessageEntityDto message)
+        public async Task<IActionResult> Create([FromBody] CreateMessageEntityDto message)
         {
             try
             {
                 var result = await messageLogic.CreateAsync(message);
-                return Ok(result);
+                return Ok(messageMapper.ToDto(result));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOne(Guid id)
+        {
+            try
+            {
+                HeaderParameters parameters = new HeaderParameters();
+
+                if (id != Guid.Empty)
+                {
+                    MessageResponseDto response;
+                    var result = await messageLogic.GetOneAsync(id);
+                    MessageMapper messageMapper = new MessageMapper();
+                    response = messageMapper.ToDto(result);
+
+                    //parameters.GetResponseWithHeaders(Response, result.Count());
+                    return Ok(response);
+                }
+                return BadRequest(500);
             }
             catch (Exception ex)
             {
@@ -34,45 +62,24 @@ namespace service_application.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOneMessage(Guid id)
+        public async Task<IActionResult> GetAll()
         {
             try
             {
                 HeaderParameters parameters = new HeaderParameters();
+                MessageResponseDto response;
+                var result = await messageLogic.GetAllAsync();
 
-                if (id == Guid.Empty)
+                MessageMapper messageMapper = new MessageMapper();
+                object[] tm = new object[result.Count()];
+                int i = 0;
+                foreach (var item in result)
                 {
-
-                    MessageResponseDto response;
-                    var result = await messageLogic.GetAllAsync();
-
-                    object[] tm = new object[result.Count()];
-                    int i = 0;
-                    foreach (var item in result)
-                    {
-                        response = new MessageResponseDto
-                        {
-                            Message_id = item.Message_id,
-                            Content = item.Content,
-                            Created_date = item.Created_date,
-                            Handyman = item.Handyman,
-                            Handyman_id = item.Handyman_id,
-                            Costumer = item.Costumer,
-                            Costumer_id = item.Costumer_id,
-                            Ticket = item.Ticket,
-                            Ticket_id = item.Ticket_id,
-                        };
-                        tm[i++] = response;
-                    }
-
-                    parameters.GetResponseWithHeaders(Response, result.Count());
-                    return Ok(tm);
+                    response = messageMapper.ToDto(item);
+                    tm[i++] = response;
                 }
-                else
-                {
-                    var result = await messageLogic.GetOneAsync(id);
-                    return Ok(result);
-                }
+                parameters.GetResponseWithHeaders(Response, result.Count());
+                return Ok(tm);
             }
             catch (Exception ex)
             {
@@ -82,7 +89,7 @@ namespace service_application.Controller
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public async Task<IActionResult> DeleteMessage([FromRoute] Guid Id)
+        public async Task<IActionResult> Delete([FromRoute] Guid Id)
         {
             try
             {
@@ -96,13 +103,14 @@ namespace service_application.Controller
             }
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> UpdateMessage(Guid id, CreateMessageEntityDto? messageEntityDto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, CreateMessageEntityDto? messageEntityDto)
         {
             try
             {
-                await messageLogic.UpdateAsync(id, messageEntityDto);
-                return Ok();
+                var result = await messageLogic.UpdateAsync(id, messageEntityDto);
+                var messageDto = messageMapper.ToDto(result);
+                return Ok(messageDto);
             }
             catch (Exception)
             {

@@ -9,7 +9,9 @@ using service_application.Services;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
+using service_data.Models.Mappers;
 using service_logic;
+using service_logic.LogicTicket;
 using service_repository.Exceptions;
 using System.Net.Http.Headers;
 
@@ -20,21 +22,23 @@ namespace service_application.Controller
     public class UserController : ControllerBase
     {
         private readonly IUserLogic userLogic;
-        private readonly PasswordService passwordService;
-        public UserController(IUserLogic userLogic, PasswordService passwordService)
+        private readonly IPasswordService passwordService;
+        private readonly IUserMapper userMapper;
+        public UserController(IUserLogic userLogic, IPasswordService passwordService, IUserMapper userMapper)
         {
-             this.userLogic = userLogic;
+            this.userLogic = userLogic;
             this.passwordService = passwordService;
+            this.userMapper = userMapper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserEntityDto user )
+        public async Task<IActionResult> Create([FromBody] CreateUserEntityDto user )
         {
             try
             {
                 user.Password = passwordService.HashPassword(user.Password);
                 var result = await userLogic.CreateAsync(user);
-                return Ok(result);
+                return Ok(userMapper.ToDto(result));
             }
             catch (Exception ex)
             {
@@ -42,42 +46,78 @@ namespace service_application.Controller
             }
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOne(Guid id)
+        {
+            try
+            {
+                UserResponseDto response;
+                var result = await userLogic.GetOneAsync(id);
+                UserMapper mapper = new();
+                UserResponseDto userResponse = mapper.ToDto(result);
+                response = new UserResponseDto
+                {
+                    Id = result.User_id.ToString(),
+                    Username = result.Username,
+                    Email = result.Email,
+                    Role = result.Role.ToString(),
+                };
+                return Ok(userResponse);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet()]
+        [Route("/GetUserTypes")]
+        public async Task<IActionResult> GetUserTypes()
+        {
+            try
+            {
+                var obj = new { name = "handyman" };
+                var obj2 = new {  name = "admin" };
+                var obj3 = new {  name = "costumer" };
+
+                var array = new object[] { obj, obj2, obj3 };
+
+                return Ok(array);
+            }
+
+                
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpGet]
-        public async Task<IActionResult> GetOneUser(Guid id)
+        public async Task<IActionResult> GetAll()
         {
             try
             {
                 HeaderParameters parameters = new HeaderParameters();
-                
-                if (id == Guid.Empty)
+                UserResponseDto response;
+
+                var result = await userLogic.GetAllAsync();
+
+                object[] tm = new object[result.Count()];
+                int i = 0;
+                foreach (var item in result)
                 {
-
-                    UserResponseDto response;
-
-                    var result = await userLogic.GetAllAsync();
-
-                    object[] tm = new object[result.Count()];
-                    int i = 0;
-                    foreach (var item in result)
+                    response = new UserResponseDto
                     {
-                        response = new UserResponseDto
-                        {
-                            Id = item.User_id.ToString(),
-                            Username = item.Username,
-                            Email = item.Email,
-                            Role = item.Role.ToString(),
-                        };
-                        tm[i++] = response;
-                    }
+                        Id = item.User_id.ToString(),
+                        Username = item.Username,
+                        Email = item.Email,
+                        Role = item.Role.ToString(),
+                    };
+                    tm[i++] = response;
+                }
 
-                    parameters.GetResponseWithHeaders(Response, result.Count());
-                    return Ok(tm);
-                }
-                else
-                {
-                    var result = await userLogic.GetOneAsync(id);
-                    return Ok(result);
-                }
+                parameters.GetResponseWithHeaders(Response, result.Count());
+                return Ok(tm);
             }
             catch (Exception ex)
             {
@@ -87,7 +127,7 @@ namespace service_application.Controller
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public async Task<IActionResult> DeleteUser([FromRoute]Guid Id)
+        public async Task<IActionResult> Delete([FromRoute]Guid Id)
         {
             try
             {
@@ -102,13 +142,14 @@ namespace service_application.Controller
             }
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> UpdateUser(Guid id, CreateUserEntityDto user)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, CreateUserEntityDto user)
         {
             try
             {
-                await userLogic.UpdateAsync(id, user);
-                return Ok();
+                var resut = await userLogic.UpdateAsync(id, user);
+                var userDto = userMapper.ToDto(resut);
+                return Ok(userDto);
             }
             catch (Exception)
             {

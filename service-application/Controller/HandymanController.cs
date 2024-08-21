@@ -5,6 +5,7 @@ using service_application.Services;
 using service_data.Models.DTOs.RequestDto;
 using service_data.Models.DTOs.ResponseDto;
 using service_data.Models.EntityModels;
+using service_data.Models.Mappers;
 using service_logic;
 using service_logic.LogicAdmin;
 using service_logic.LogicHandyman;
@@ -17,21 +18,47 @@ namespace service_application.Controller
     public class HandymanController : ControllerBase
     {
         private readonly IHandymanLogic handymanLogic;
-        private readonly PasswordService passwordService;
+        private readonly IPasswordService passwordService;
+        private readonly IHandymanMapper handymanMapper;
 
-        public HandymanController(IHandymanLogic handymanLogic)
+        public HandymanController(IHandymanLogic handymanLogic, IPasswordService passwordService, IHandymanMapper handymanMapper)
         {
             this.handymanLogic = handymanLogic;
+            this.passwordService = passwordService;
+            this.handymanMapper = handymanMapper;   
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateHandyman([FromBody] CreateHandymanEntityDto handyman)
+        public async Task<IActionResult> Create([FromBody] CreateHandymanEntityDto handyman)
         {
             try
             {
                 handyman.Password = passwordService.HashPassword(handyman.Password);
                 var result = await handymanLogic.CreateAsync(handyman);
-                return Ok(result);
+                return Ok(handymanMapper.ToDto(result));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOnen(Guid id)
+        {
+            try
+            {
+                HeaderParameters parameters = new HeaderParameters();
+
+                if (id != Guid.Empty)
+                {
+                    HandymanMapper handymanMapper = new HandymanMapper();
+                    var result = await handymanLogic.GetOneAsync(id);
+                    HandymanResponseDto response = handymanMapper.ToDto(result);
+                    
+                    return Ok(response);
+                }
+                return BadRequest();
             }
             catch (Exception ex)
             {
@@ -40,39 +67,25 @@ namespace service_application.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOneHandyman(Guid id)
+        public async Task<IActionResult> GetAll()
         {
             try
             {
                 HeaderParameters parameters = new HeaderParameters();
+                HandymanResponseDto response;
+                var result = await handymanLogic.GetAllAsync();
 
-                if (id == Guid.Empty)
+                HandymanMapper handymanMapper = new HandymanMapper();   
+                object[] tm = new object[result.Count()];
+                int i = 0;
+                foreach (var item in result)
                 {
-
-                    HandymanResponseDto response;
-                    var result = await handymanLogic.GetAllAsync();
-
-                    object[] tm = new object[result.Count()];
-                    int i = 0;
-                    foreach (var item in result)
-                    {
-                        response = new HandymanResponseDto
-                        {
-                            Handyman_id = item.Handyman_id,
-                            User_id = item.User_id,
-                            User = item.User
-                        };
-                        tm[i++] = response;
-                    }
-
-                    parameters.GetResponseWithHeaders(Response, result.Count());
-                    return Ok(tm);
+                    response = handymanMapper.ToDto(item);
+                    tm[i++] = response;
                 }
-                else
-                {
-                    var result = await handymanLogic.GetOneAsync(id);
-                    return Ok(result);
-                }
+
+                parameters.GetResponseWithHeaders(Response, result.Count());
+                return Ok(tm);
             }
             catch (Exception ex)
             {
@@ -82,7 +95,7 @@ namespace service_application.Controller
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public async Task<IActionResult> DeleteHandyman([FromRoute] Guid Id)
+        public async Task<IActionResult> Delete([FromRoute] Guid Id)
         {
             try
             {
@@ -97,13 +110,14 @@ namespace service_application.Controller
             }
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> UpdateUser(Guid id, CreateHandymanEntityDto adminEntityDto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, CreateHandymanEntityDto adminEntityDto)
         {
             try
             {
-                await handymanLogic.UpdateAsync(id, adminEntityDto);
-                return Ok();
+                var result = await handymanLogic.UpdateAsync(id, adminEntityDto);
+                var handymanDto = handymanMapper.ToDto(result);
+                return Ok(handymanDto);
             }
             catch (Exception)
             {

@@ -103,6 +103,21 @@ namespace service_repository.Repositories.RepoUsers
             return res;
         }
 
+        public async Task<User> GetOneByEmailAsync(string email)
+        {
+            var res = ctx.User
+                     .Where(e => e.Email.Contains(email))
+                     .Select(e => e)
+                     .ToList()
+                     .FirstOrDefault();
+            //var res = await ctx.User.FindAsync(x => x.);
+            if (res == null)
+            {
+                throw new UserNotFoundException(message: $"User with ID { email } not found");
+            }
+            return res;
+        }
+
         public async Task<User> UpdateAsync(Guid Id, CreateUserEntityDto user)
         {
             if (IsValidUser(user))
