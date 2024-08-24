@@ -80,6 +80,19 @@ namespace service_data.Models
                 .WithMany(h => h.Messages)
                 .HasForeignKey(m => m.Handyman_id);
 
+            //modelBuilder.Entity<HandymanSkill>()
+            //    .HasKey(hs => new { hs.})
+
+            modelBuilder.Entity<HandymanSkill>()
+            .HasOne(hs => hs.Skill)
+            .WithMany(s => s.HandymanSkills)
+            .HasForeignKey(hs => hs.Skill_id);
+
+            modelBuilder.Entity<HandymanSkill>()
+            .HasOne(hs => hs.Handyman)
+            .WithMany(s => s.HandymanSkills)
+            .HasForeignKey(hs => hs.Handyman_id);
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -90,6 +103,8 @@ namespace service_data.Models
         public DbSet<Admin> Admin { get; set; }
         public DbSet<Costumer> Costumer { get; set; }
         public DbSet<Handyman> Handyman { get; set; }
+        public DbSet<Skill> Skill { get; set; }
+        public DbSet<HandymanSkill> HandymanSkill { get; set; }
 
     }
 }
