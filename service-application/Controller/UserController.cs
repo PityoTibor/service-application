@@ -145,6 +145,7 @@ namespace service_application.Controller
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, CreateUserEntityDto user)
         {
+
             try
             {
                 var resut = await userLogic.UpdateAsync(id, user);

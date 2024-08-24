@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using service_data.Models;
 
@@ -10,9 +11,11 @@ using service_data.Models;
 namespace service_data.Migrations
 {
     [DbContext(typeof(ServiceAppDbContext))]
-    partial class ServiceAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240821201351_add-column-to-Ticket")]
+    partial class addcolumntoTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
