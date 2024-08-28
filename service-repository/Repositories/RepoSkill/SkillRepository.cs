@@ -1,5 +1,6 @@
 ﻿using service_data.Models;
 using service_data.Models.EntityModels;
+using service_repository.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,18 @@ namespace service_repository.Repositories.RepoSkill
             this.ctx = ctx;
         }
 
-        public Task<IQueryable<Skill>> GetAllAsync()
+        public async Task<IQueryable<Skill>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var query = ctx.Skill.AsQueryable();
+                return await Task.FromResult(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(message: "Failed to retrieve skill", innerException: ex);
+            }
         }
 
         public Task<Skill> GetAsync()
