@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace service_data.Models.EntityModels
 {
-    public class Skill
+    public class TicketSkill
     {
         [Key]
+        public Guid TicketSkill_skill_id { get; set; }
+        public Guid Ticket_id { get; set; }
+        public virtual Ticket Ticket { get; set; }
         public Guid Skill_id { get; set; }
-        public string Name { get; set; }
-        public virtual ICollection<HandymanSkill> HandymanSkills { get; set; }
-        public virtual ICollection<TicketSkill> TicketSkills { get; set; }
-
+        public virtual Skill Skill { get; set; }
     }
 }

@@ -43,6 +43,7 @@ namespace service_data.Models.EntityModels
 
         [NotMapped]
         public virtual ICollection<Message>? Messages { get; set; }
-
+        [NotMapped]
+        public virtual ICollection<TicketSkill>? TicketSkills { get; set; }
     }
 }
