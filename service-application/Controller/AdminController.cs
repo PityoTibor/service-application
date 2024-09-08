@@ -48,6 +48,11 @@ namespace service_application.Controller
             try
             {
                 var result = await adminLogic.DeleteAsync(Id);
+                if (result)
+                {
+                   var a = await GetAll();
+                   return Ok(a.);
+                }
                 //return StatusCode(200, "asdasd");
                 return Ok(result);
             }

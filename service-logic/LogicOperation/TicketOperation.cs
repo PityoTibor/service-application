@@ -27,16 +27,17 @@ namespace service_logic.LogicOperation
 
         public async Task<bool> AutoAssignTicket(Guid ticketId)
         {
-            var ticket = await ticketLogic.GetOneAsync(ticketId);
-            
-            if (ticket.StatusEnum == service_data.Models.EntityModels.StatusEnum.unassigned && ticket.Handyman_id == null)
-            {
-                var skills = ticket.TicketSkills.ToList();
-                var handymans = await handymanLogic.GetAllAsync();
+            //var ticket = await ticketLogic.GetOneAsync(ticketId);
 
-                var selectedHandyman = handymans.Select
+            //if (ticket.StatusEnum == service_data.Models.EntityModels.StatusEnum.unassigned && ticket.Handyman_id == null)
+            //{
+            //    var skills = ticket.TicketSkills.ToList();
+            //    var handymans = await handymanLogic.GetAllAsync();
+
+            //    var selectedHandyman = handymans.Select
 
 
+            //return true;
             return true;
         }
     }

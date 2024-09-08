@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace service_data.Models.DTOs.RequestDto
@@ -13,6 +14,7 @@ namespace service_data.Models.DTOs.RequestDto
         public string? Username { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public RoleEnum Role { get; set; }
     }
 }
