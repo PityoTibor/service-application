@@ -100,8 +100,9 @@ namespace service_application.Controller
             try
             {
                 var result = await handymanLogic.DeleteAsync(Id);
+                var getAllHandyman = await GetAll();
                 //return StatusCode(200, "asdasd");
-                return Ok(result);
+                return Ok(getAllHandyman);
             }
             catch (Exception)
             {

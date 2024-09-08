@@ -94,7 +94,8 @@ namespace service_application.Controller
             try
             {
                 var result = await messageLogic.DeleteAsync(Id);
-                return Ok(result);
+                var allMessage = await GetAll();
+                return Ok(allMessage);
             }
             catch (Exception)
             {

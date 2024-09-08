@@ -84,6 +84,7 @@ namespace service_application.Controller
             try
             {
                 var result = await ticketLogic.DeleteAsync(Id);
+                var allTicket = await GetAll();
                 //return StatusCode(200, "asdasd");
                 return Ok(result);
             }

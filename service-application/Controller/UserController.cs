@@ -132,6 +132,7 @@ namespace service_application.Controller
             try
             {
                 var result = await userLogic.DeleteAsync(Id);
+                var allUser = await GetAll();
                 //return StatusCode(200, "asdasd");
                 return Ok(result);
             }

@@ -99,8 +99,8 @@ namespace service_application.Controller
             try
             {
                 var result = await costumerLogic.DeleteAsync(Id);
-                //return StatusCode(200, "asdasd");
-                return Ok(result);
+                var allCostumer = await GetAll();
+                return Ok(allCostumer);
             }
             catch (Exception)
             {

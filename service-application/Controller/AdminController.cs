@@ -8,6 +8,7 @@ using service_data.Models.EntityModels;
 using service_data.Models.Mappers;
 using service_logic;
 using service_logic.LogicAdmin;
+using service_logic.LogicCostumer;
 using service_logic.LogicUsers;
 
 namespace service_application.Controller
@@ -50,8 +51,8 @@ namespace service_application.Controller
                 var result = await adminLogic.DeleteAsync(Id);
                 if (result)
                 {
-                   var a = await GetAll();
-                   return Ok(a.);
+                   var allAdmin = await GetAll();
+                   return Ok(allAdmin);
                 }
                 //return StatusCode(200, "asdasd");
                 return Ok(result);
@@ -68,23 +69,15 @@ namespace service_application.Controller
             try
             {
                 HeaderParameters parameters = new HeaderParameters();
+
                 if (id != Guid.Empty)
                 {
-                    AdminResponseDto response;
-
                     var result = await adminLogic.GetOneAsync(id);
-                    /*foreach (var item in result)
-                    {
-                        await Console.Out.WriteLineAsync(item.ToString());
-                    }
-                    */
-                    response = new AdminResponseDto
-                    {
-                        Id = result.Admin_id,
-                        //kellene majd wrapper
-                        //UserModelDto = item.User;
-                    };
+                    AdminMapper mapper = new();
+                    AdminResponseDto response = mapper.ToDto(result);
 
+
+                    //parameters.GetResponseWithHeaders(Response, result.Count());
                     return Ok(response);
                 }
                 return BadRequest(500);
@@ -102,33 +95,21 @@ namespace service_application.Controller
             {
                 HeaderParameters parameters = new HeaderParameters();
                 AdminResponseDto response;
-
                 var result = await adminLogic.GetAllAsync();
-                /*foreach (var item in result)
-                {
-                    await Console.Out.WriteLineAsync(item.ToString());
-                }
-                */
+
                 object[] tm = new object[result.Count()];
-                int i = 0;  
+                int i = 0;
                 foreach (var item in result)
                 {
-                    response = new AdminResponseDto
-                    {
-                        Id = item.Admin_id,
-                        //kellene majd wrapper
-                        //UserModelDto = item.User;
-                    };
+                    response = adminMapper.ToDto(item);
                     tm[i++] = response;
                 }
 
                 parameters.GetResponseWithHeaders(Response, result.Count());
                 return Ok(tm);
-
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
