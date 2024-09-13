@@ -103,6 +103,11 @@ namespace service_data.Models
             .WithMany(s => s.TicketSkills)
             .HasForeignKey(ts => ts.Ticket_id);
 
+            modelBuilder.Entity<Interval>()
+            .HasOne(hs => hs.handyman)
+            .WithMany(s => s.Intervals)
+            .HasForeignKey(hs => hs.Handyman_id);
+
             base.OnModelCreating(modelBuilder);
         }
 

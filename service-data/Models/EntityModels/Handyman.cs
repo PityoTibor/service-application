@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,5 +26,6 @@ namespace service_data.Models.EntityModels
         [NotMapped]
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<HandymanSkill> HandymanSkills { get; set; }
+        public virtual ICollection<Interval> Intervals { get; set; }
     }
 }
