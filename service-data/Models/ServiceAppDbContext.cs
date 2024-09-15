@@ -104,7 +104,7 @@ namespace service_data.Models
             .HasForeignKey(ts => ts.Ticket_id);
 
             modelBuilder.Entity<Interval>()
-            .HasOne(hs => hs.handyman)
+            .HasOne(hs => hs.Handyman)
             .WithMany(s => s.Intervals)
             .HasForeignKey(hs => hs.Handyman_id);
 
@@ -121,6 +121,7 @@ namespace service_data.Models
         public DbSet<Skill> Skill { get; set; }
         public DbSet<HandymanSkill> HandymanSkill { get; set; }
         public DbSet<TicketSkill> TicketSkill { get; set; }
+        public DbSet<Interval> Interval { get; set; }
 
     }
 }

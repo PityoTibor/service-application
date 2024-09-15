@@ -17,6 +17,6 @@ namespace service_data.Models.EntityModels
         public DateTime To { get; set; }
         public Priority Priority { get; set; }
         public Guid Handyman_id { get; set; }
-        public virtual Handyman handyman { get; set; }
+        public virtual Handyman Handyman { get; set; }
     }
 }

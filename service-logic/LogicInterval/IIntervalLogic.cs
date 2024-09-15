@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace service_repository.Repositories.RepoInterval
+namespace service_logic.LogicInterval
 {
-    public interface IIntervalRepository
+    public interface IIntervalLogic
     {
         Task<Interval> CreateAsync(CreateIntervalEntityDto data);
         Task<IQueryable<Interval>> GetAllAsync();

@@ -12,6 +12,6 @@ namespace service_data.Models.DTOs.RequestDto
         public DateTime From { get; set; }
         public DateTime To { get; set; }
         public Priority Priority { get; set; }
-        public Handyman Handyman { get; set; }
+        public Guid Handyman_id { get; set; }
     }
 }
