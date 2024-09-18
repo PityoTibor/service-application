@@ -73,7 +73,7 @@ namespace service_repository.Repositories.RepoSkill
             Skill skill = new Skill()
             { 
                 Skill_id = Guid.NewGuid(),
-                IsAutoAssing = newSkill.IsAutoAssing,
+                IsAutoAssign = newSkill.IsAutoAssing,
                 Name = newSkill.Name,
                 
             };
@@ -95,7 +95,7 @@ namespace service_repository.Repositories.RepoSkill
                 }
 
                 existingSkill.Name = newSkill.Name != null ? newSkill.Name : existingSkill.Name;
-                existingSkill.IsAutoAssing = newSkill.IsAutoAssing != null ? newSkill.IsAutoAssing : existingSkill.IsAutoAssing;
+                existingSkill.IsAutoAssign = newSkill.IsAutoAssing != null ? newSkill.IsAutoAssing : existingSkill.IsAutoAssign;
 
                 try
                 {

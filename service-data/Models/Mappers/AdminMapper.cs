@@ -12,9 +12,11 @@ namespace service_data.Models.Mappers
     {
         public AdminResponseDto ToDto(Admin admin)
         {
+            UserMapper userMapper = new();
             return new AdminResponseDto
             {
-                Id = admin.Admin_id
+                Id = admin.Admin_id,
+                User = userMapper.ToDto(admin.User)
             };
         }
     }

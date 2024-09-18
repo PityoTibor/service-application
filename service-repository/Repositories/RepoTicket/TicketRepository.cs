@@ -27,7 +27,7 @@ namespace service_repository.Repositories.RepoTicket
                 Description = newTicket.Description,
                 Created_date = DateTime.Now,
                 SeverityEnum = newTicket.SeverityEnum ?? SeverityEnum.low,
-                StatusEnum = StatusEnum.assigned,
+                StatusEnum = StatusEnum.unassigned,
                 Costumer_id = newTicket.Costumer_id,
             };
             

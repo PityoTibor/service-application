@@ -13,8 +13,8 @@ namespace service_repository.Repositories.RepoSkill
     {
         public Task<IQueryable<Skill>> GetAllAsync();
         public Task<Skill> GetOneAsync(Guid id);
-        public Task<Skill> CreateAsync(CreateMessageEntityDto message);
-        public Task<Skill> UpdateAsync(Guid Id, CreateMessageEntityDto message);
+        public Task<Skill> CreateAsync(CreateSkillEntityDto message);
+        public Task<Skill> UpdateAsync(Guid Id, CreateSkillEntityDto message);
         public Task<bool> DeleteAsync(Guid Id);
 
     }

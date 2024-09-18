@@ -14,7 +14,7 @@ namespace service_data.Models.EntityModels
         [Key]
         public Guid Skill_id { get; set; }
         public string Name { get; set; }
-        public bool IsAutoAssing { get; set; }
+        public bool IsAutoAssign { get; set; }
         public virtual ICollection<HandymanSkill> HandymanSkills { get; set; }
         public virtual ICollection<TicketSkill> TicketSkills { get; set; }
 

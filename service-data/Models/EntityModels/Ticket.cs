@@ -29,10 +29,10 @@ namespace service_data.Models.EntityModels
         public DateTime? Created_date { get; set; }
         public SeverityEnum? SeverityEnum { get; set; }
         public StatusEnum? StatusEnum  { get; set; }
-
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public string Address { get; set; }
+        
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public string? Address { get; set; }
 
         public Guid? Handyman_id { get; set; }
         [NotMapped]

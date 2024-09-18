@@ -9,6 +9,6 @@ namespace service_data.Models.DTOs.ResponseDto
     public class AdminResponseDto
     {
         public Guid Id { get; set; }
-        public UserModelDto UserModelDto { get; set; }
+        public UserResponseDto User { get; set; }
     }
 }
