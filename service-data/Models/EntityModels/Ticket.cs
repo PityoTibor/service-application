@@ -19,6 +19,7 @@ namespace service_data.Models.EntityModels
     {
         unassigned = 0, assigned = 1, work_in_progress = 2, pending = 3, resolved = 4
     }
+    [Table("tbl_ticket")]
     public class Ticket
     {
         [Key]

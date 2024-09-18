@@ -13,6 +13,8 @@ namespace service_data.Models.EntityModels
     {
         admin = 0, handyman = 1, costumer = 2
     }
+
+    [Table("tbl_user")]
     public class User
     {
         [Key]

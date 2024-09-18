@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace service_data.Models.EntityModels
 {
+    [Table("tbl_message")]
     public class Message
     {
         [Key]

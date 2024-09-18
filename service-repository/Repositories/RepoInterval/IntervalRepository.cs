@@ -25,8 +25,8 @@ namespace service_repository.Repositories.RepoInterval
                 {
                     Interval Interval = new Interval()
                     {
-                        From = data.From,
-                        To = data.To,
+                        FromDate = data.From,
+                        ToDate = data.To,
                         Priority = data.Priority,
                         Handyman_id = data.Handyman_id,
                     };

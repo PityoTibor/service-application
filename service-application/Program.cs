@@ -24,6 +24,8 @@ using service_data.Models.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using service_repository.Repositories.RepoInterval;
+using service_logic.LogicInterval;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +62,9 @@ builder.Services.AddScoped<IMessageLogic, MessageLogic>();
 
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<ITicketLogic, TicketLogic>();
+
+builder.Services.AddScoped<IIntervalRepository, IntervalRepository>();
+builder.Services.AddScoped<IIntervalLogic, IntervalLogic>();
 
 builder.Services.AddSingleton<IAdminMapper, AdminMapper>();
 builder.Services.AddSingleton<ICostumerMapper, CostumerMapper>();

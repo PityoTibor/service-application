@@ -82,9 +82,9 @@ namespace service_repository.Repositories.RepoMessage
             }
         }
 
-        public async Task<Message> GetOneAsync(Guid Id)
+        public async Task<Message> GetOneAsync(Guid id)
         {
-            var result = await ctx.Message.FindAsync(Id);
+            var result = await ctx.Message.FindAsync(id);
             return result;
         }
 

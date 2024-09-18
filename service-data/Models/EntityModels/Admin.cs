@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace service_data.Models.EntityModels
 {
+    [Table("tbl_admin")]
     public class Admin
     {
         [Key]

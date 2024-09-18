@@ -28,7 +28,7 @@ namespace service_application.Controller
             try
             {
                 var result = await IntervalLogic.CreateAsync(data);
-                return result;
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -41,7 +41,14 @@ namespace service_application.Controller
         {
             try
             {
+                HeaderParameters parameters = new HeaderParameters();
 
+                if (id != Guid.Empty)
+                {
+                    var result = await IntervalLogic.GetOneAsync(id);
+                    return Ok(result);
+                }
+                return BadRequest();
             }
             catch (Exception ex)
             {
@@ -54,7 +61,8 @@ namespace service_application.Controller
         {
             try
             {
-
+                var result = await IntervalLogic.GetAllAsync();
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -68,13 +76,12 @@ namespace service_application.Controller
         {
             try
             {
-                var result = await messageLogic.DeleteAsync(Id);
+                var result = await IntervalLogic.DeleteAsync(Id);
                 var allMessage = await GetAll();
                 return Ok(allMessage);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
