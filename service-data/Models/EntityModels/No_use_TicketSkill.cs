@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace service_data.Models.EntityModels
 {
     [Table("tbl_ticketskill")]
-    public class TicketSkill
+    public class No_use_TicketSkill
     {
         [Key]
         public Guid TicketSkill_skill_id { get; set; }

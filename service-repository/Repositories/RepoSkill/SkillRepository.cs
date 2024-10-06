@@ -110,7 +110,7 @@ namespace service_repository.Repositories.RepoSkill
             }
             else
             {
-                throw new InvalidUserException(message: "The object is not of the expected type.");
+                throw new Exception(message: "The object is not of the expected type.");
             }
         }
 

@@ -29,10 +29,10 @@ namespace service_data.Models.EntityModels
         public DateTime? Created_date { get; set; }
         public SeverityEnum? SeverityEnum { get; set; }
         public StatusEnum? StatusEnum  { get; set; }
-        
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
-        public string? Address { get; set; }
+
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public string Address { get; set; }
 
         public Guid? Handyman_id { get; set; }
         [NotMapped]
@@ -45,6 +45,6 @@ namespace service_data.Models.EntityModels
         [NotMapped]
         public virtual ICollection<Message>? Messages { get; set; }
         [NotMapped]
-        public virtual ICollection<TicketSkill>? TicketSkills { get; set; }
+        public virtual ICollection<No_use_TicketSkill>? TicketSkills { get; set; }
     }
 }

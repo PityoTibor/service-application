@@ -26,6 +26,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using service_repository.Repositories.RepoInterval;
 using service_logic.LogicInterval;
+using service_repository.Repositories.RepoSkill;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +66,10 @@ builder.Services.AddScoped<ITicketLogic, TicketLogic>();
 
 builder.Services.AddScoped<IIntervalRepository, IntervalRepository>();
 builder.Services.AddScoped<IIntervalLogic, IntervalLogic>();
+
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+builder.Services.AddScoped<IIntervalLogic, IntervalLogic>();
+
 
 builder.Services.AddSingleton<IAdminMapper, AdminMapper>();
 builder.Services.AddSingleton<ICostumerMapper, CostumerMapper>();

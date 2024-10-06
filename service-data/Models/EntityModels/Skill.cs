@@ -16,7 +16,7 @@ namespace service_data.Models.EntityModels
         public string Name { get; set; }
         public bool IsAutoAssign { get; set; }
         public virtual ICollection<HandymanSkill> HandymanSkills { get; set; }
-        public virtual ICollection<TicketSkill> TicketSkills { get; set; }
+        //public virtual ICollection<No_use_TicketSkill> TicketSkills { get; set; }
 
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using service_data.Models;
 
@@ -10,9 +11,11 @@ using service_data.Models;
 namespace service_data.Migrations
 {
     [DbContext(typeof(ServiceAppDbContext))]
-    partial class ServiceAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240930125301_DeleteTicketSkill")]
+    partial class DeleteTicketSkill
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,6 +161,27 @@ namespace service_data.Migrations
                     b.HasIndex("Ticket_id");
 
                     b.ToTable("tbl_message");
+                });
+
+            modelBuilder.Entity("service_data.Models.EntityModels.No_use_TicketSkill", b =>
+                {
+                    b.Property<Guid>("TicketSkill_skill_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("Skill_id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("Ticket_id")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("TicketSkill_skill_id");
+
+                    b.HasIndex("Skill_id");
+
+                    b.HasIndex("Ticket_id");
+
+                    b.ToTable("tbl_ticketskill");
                 });
 
             modelBuilder.Entity("service_data.Models.EntityModels.Skill", b =>
@@ -331,6 +355,25 @@ namespace service_data.Migrations
                     b.Navigation("Ticket");
                 });
 
+            modelBuilder.Entity("service_data.Models.EntityModels.No_use_TicketSkill", b =>
+                {
+                    b.HasOne("service_data.Models.EntityModels.Skill", "Skill")
+                        .WithMany("TicketSkills")
+                        .HasForeignKey("Skill_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("service_data.Models.EntityModels.Ticket", "Ticket")
+                        .WithMany("TicketSkills")
+                        .HasForeignKey("Ticket_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Skill");
+
+                    b.Navigation("Ticket");
+                });
+
             modelBuilder.Entity("service_data.Models.EntityModels.Ticket", b =>
                 {
                     b.HasOne("service_data.Models.EntityModels.Costumer", "Costumer")
@@ -367,11 +410,15 @@ namespace service_data.Migrations
             modelBuilder.Entity("service_data.Models.EntityModels.Skill", b =>
                 {
                     b.Navigation("HandymanSkills");
+
+                    b.Navigation("TicketSkills");
                 });
 
             modelBuilder.Entity("service_data.Models.EntityModels.Ticket", b =>
                 {
                     b.Navigation("Messages");
+
+                    b.Navigation("TicketSkills");
                 });
 
             modelBuilder.Entity("service_data.Models.EntityModels.User", b =>
