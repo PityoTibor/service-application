@@ -1,0 +1,115 @@
+{
+  "skills": [
+    {
+      "name": "autó mentés",
+      "children": [
+        { "name": "mobil gumiszervíz" },
+        { "name": "vontatás" },
+        { "name": "javítás" },
+        { "name": "nem tudom" },
+        { "name": "egyéb" }
+      ]
+    },
+    {
+      "name": "fűtés",
+      "children": [
+        {
+          "name": "fűtővíz rendszer"
+        },
+        {
+          "name": "fűtő készülék",
+          "children": [
+            { "name": "hőszivattyú" },
+            { "name": "kazán", "children": [
+              { "name": "kondenzációs" },
+              { "name": "atmoszférikus" },
+              { "name": "turbós" },
+              { "name": "vegyes tüzelés" },
+              { "name": "egyéb" },
+              { "name": "nem tudom" }
+            ] },
+            { "name": "konvektor" },
+            { "name": "fali melegítő" },
+            { "name": "nem tudom" },
+            { "name": "egyéb" }
+          ]
+        },
+        { "name": "nem tudom" },
+        { "name": "egyéb" }
+      ]
+    },
+    {
+      "name": "víz",
+      "children": [
+        { "name": "nyomó víz" },
+        { "name": "dugulás" },
+        { "name": "fűtővíz" },
+        { "name": "nem tudom" },
+        { "name": "egyéb" }
+      ]
+    },
+    {
+      "name": "gáz",
+      "children": [
+        {
+          "name": "vezeték",
+          "children": [
+            { "name": "óra előtt" },
+            { "name": "óra után" },
+            { "name": "nem tudom" },
+            { "name": "egyéb" }
+          ]
+        },
+        {
+          "name": "gáz készülék",
+          "children": [
+            { "name": "kazán" },
+            { "name": "konvektor" },
+            { "name": "fali melegítő" },
+            { "name": "nem tudom" },
+            { "name": "egyéb" }
+          ]
+        },
+        { "name": "nem tudom" },
+        { "name": "egyéb" }
+      ]
+    },
+    {
+      "name": "villany",
+      "children": [
+        { "name": "óra előtt" },
+        { "name": "óra után" },
+        { "name": "nem tudom" },
+        { "name": "egyéb" }
+      ]
+    },
+    {
+      "name": "klíma",
+      "children": []
+    },
+    {
+      "name": "dugulás",
+      "children": []
+    },
+    {
+      "name": "infó",
+      "children": []
+    },
+    {
+      "name": "zármentés",
+      "children": []
+    },
+    {
+      "name": "riasztó",
+      "children": []
+    },
+    {
+      "name": "nem tudom",
+      "children": []
+    },
+    {
+      "name": "egyéb",
+      "children": []
+    }
+  ]
+}

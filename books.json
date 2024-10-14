@@ -1,0 +1,14 @@
+[
+    {
+        "Id": 1,
+        "Title": "C# Programming",
+        "Author": "John Doe",
+        "Year": 2023
+    },
+    {
+        "Id": 2,
+        "Title": "Learning ASP.NET Core",
+        "Author": "Jane Smith",
+        "Year": 2021
+    }
+]

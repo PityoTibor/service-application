@@ -78,6 +78,9 @@ builder.Services.AddSingleton<IMessageMapper, MessageMapper>();
 builder.Services.AddSingleton<ITicketMapper, TicketMapper>();
 builder.Services.AddSingleton<IUserMapper, UserMapper>();
 
+builder.Services.AddSingleton<BookService>();
+builder.Services.AddSingleton<SkillCategoryService>();
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
